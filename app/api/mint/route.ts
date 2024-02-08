@@ -18,6 +18,7 @@ import sharp from "sharp";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
+  console.log(process.env.NODE_ENV);
   try {
     const body: FrameActionPayload = await req.json();
     const { isValid, message } = await validateFrameMessage(body);
@@ -39,7 +40,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
-    const didClaim = await hasClaimed(accountAddress!);
+    // const didClaim = await hasClaimed(accountAddress!);
+    const didClaim = await alreadyClaimed(accountAddress!);
     if (didClaim) {
       console.log("already claimed", accountAddress);
       return new NextResponse(

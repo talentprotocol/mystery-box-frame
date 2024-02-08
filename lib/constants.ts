@@ -1,5 +1,4 @@
 import { Sepolia, Base } from "@thirdweb-dev/chains";
-import { sepolia } from "./chain";
 
 export const BASE_NFT_COLLECTION_ADDRESS =
   process.env.NODE_ENV === "production"

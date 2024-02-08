@@ -22,6 +22,8 @@ export const claimNFT = async (
     external_url: `https://warpcast.com/limone.eth`,
     description: `A collection of commemorative NFTs honoring the Farcasters who were there when Farcaster first blew up big during Farcaster Frames Frenzy, Jan-Feb 2024`,
   });
+
+  console.log("minted");
 };
 
 export const alreadyClaimed = async (address: string) => {
