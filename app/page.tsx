@@ -7,6 +7,7 @@ import {
   getFrameMessage,
 } from "frames.js/next/server";
 import Link from "next/link";
+import { BASE_URL } from "../lib/constants";
 
 // This is a react server component only
 export default async function Home({
@@ -27,22 +28,20 @@ export default async function Home({
   // Here: do a server side side effect either sync or async (using await), such as minting an NFT if you want.
   // example: load the users credentials & check they have an NFT
 
-  const baseUrl = process.env.NEXT_PUBLIC_HOST || "http://localhost:3001";
-
   // then, when done, return next frame
   return (
     <div className="p-4">
       Farcaster Frames Frenzy 2024
-      <Link href={`/debug?url=${baseUrl}`} className="underline">
+      <Link href={`/debug?url=${BASE_URL}`} className="underline">
         Debug
       </Link>
       <FrameContainer
         pathname="/api/mint"
-        postUrl={`${baseUrl}/api/mint`}
+        postUrl={`${BASE_URL}/api/mint`}
         state={null}
         previousFrame={previousFrame}
       >
-        <FrameImage src={`${baseUrl}/base-img.jpg`} />
+        <FrameImage src={`${BASE_URL}/base-img.jpg`} />
         <FrameButton>Mint your Custom OG NFT</FrameButton>
       </FrameContainer>
     </div>
