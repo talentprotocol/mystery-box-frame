@@ -1,9 +1,11 @@
 export const BASE_NFT_COLLECTION_ADDRESS =
   process.env.NODE_ENV === "production"
-    ? "0xc52421dF5a3A1914Cb75CAFcFdAd66DC86570A2D"
-    : "0xC0de81408E2F9c97f4d6f8Cae8EcB1823B23a536";
+    ? "0x2a5cda192582889AB11A08e9C39e82F579816E7f"
+    : "0xb5e17d0BC5446a8a75cC3A16706e71137b8A2809";
 
 export const CHAIN =
-  process.env.NODE_ENV === "production" ? "base" : "base-goerli";
+  process.env.NODE_ENV === "production" ? "base" : "sepolia";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_HOST || "http://localhost:3000";
+export const BASE_URL = process.env.NEXT_PUBLIC_HOST || "http://localhost:3001";
+export const ERROR_IMAGE_URL = `${BASE_URL}/error-img.png`;
+export const SUCCESS_IMAGE_URL = `${BASE_URL}/success-img.png`;

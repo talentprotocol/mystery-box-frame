@@ -1,15 +1,16 @@
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { BASE_NFT_COLLECTION_ADDRESS, CHAIN } from "../lib/constants";
 
-const sdk = ThirdwebSDK.fromPrivateKey(process.env.PRIVATE_KEY!, CHAIN, {
-  secretKey: process.env.THIRDWEB_SECRET_KEY,
-});
-
 export const claimNFT = async (
   toAddress: string,
   profileName: string,
   image: Buffer
 ) => {
+  const sdk = ThirdwebSDK.fromPrivateKey(process.env.PRIVATE_KEY!, CHAIN, {
+    secretKey: process.env.THIRDWEB_SECRET_KEY,
+  });
+  console.log("minting to", toAddress);
+
   const contract = await sdk.getContract<"nft-collection">(
     BASE_NFT_COLLECTION_ADDRESS,
     "nft-collection"
@@ -24,6 +25,9 @@ export const claimNFT = async (
 };
 
 export const alreadyClaimed = async (address: string) => {
+  const sdk = ThirdwebSDK.fromPrivateKey(process.env.PRIVATE_KEY!, CHAIN, {
+    secretKey: process.env.THIRDWEB_SECRET_KEY,
+  });
   const contract = await sdk.getContract(
     BASE_NFT_COLLECTION_ADDRESS,
     "nft-collection"

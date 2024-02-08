@@ -27,7 +27,7 @@ export default async function Home({
   // Here: do a server side side effect either sync or async (using await), such as minting an NFT if you want.
   // example: load the users credentials & check they have an NFT
 
-  const baseUrl = process.env.NEXT_PUBLIC_HOST || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_HOST || "http://localhost:3001";
 
   // then, when done, return next frame
   return (
@@ -37,16 +37,12 @@ export default async function Home({
         Debug
       </Link>
       <FrameContainer
-        postUrl="/api/mint"
+        postUrl={`${baseUrl}/api/mint`}
         state={null}
         previousFrame={previousFrame}
       >
-        <FrameImage>
-          <div tw="w-full h-full bg-slate-700 text-white justify-center items-center">
-            {frameMessage?.inputText ? frameMessage.inputText : "Hello world"}
-          </div>
-        </FrameImage>
-        <FrameButton>Mint your Custom OG</FrameButton>
+        <FrameImage src={`${baseUrl}/base-img.jpg`} />
+        <FrameButton>Mint your Custom OG NFT</FrameButton>
       </FrameContainer>
     </div>
   );
