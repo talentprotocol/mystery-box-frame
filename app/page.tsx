@@ -37,6 +37,7 @@ export default async function Home({
         Debug
       </Link>
       <FrameContainer
+        pathname="/api/mint"
         postUrl={`${baseUrl}/api/mint`}
         state={null}
         previousFrame={previousFrame}
