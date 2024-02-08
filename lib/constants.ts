@@ -1,4 +1,5 @@
 import { Sepolia, Base } from "@thirdweb-dev/chains";
+import { sepolia } from "./chain";
 
 export const BASE_NFT_COLLECTION_ADDRESS =
   process.env.NODE_ENV === "production"
@@ -8,5 +9,5 @@ export const BASE_NFT_COLLECTION_ADDRESS =
 export const CHAIN = process.env.NODE_ENV === "production" ? Base : Sepolia;
 
 export const BASE_URL = process.env.NEXT_PUBLIC_HOST || "http://localhost:3001";
-export const ERROR_IMAGE_URL = `${BASE_URL}/error-img.jpg`;
+export const ERROR_IMAGE_URL = `${BASE_URL}/error-img.png`;
 export const SUCCESS_IMAGE_URL = `${BASE_URL}/success-img.jpg`;
