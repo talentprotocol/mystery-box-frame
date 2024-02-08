@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@noble/ed25519": "^2.0.0",
-    "@thirdweb-dev/sdk": "4.0.28",
+    "@thirdweb-dev/sdk": "^4",
     "@vercel/kv": "^1.0.1",
     "ethers": "^5",
     "frames.js": "^0.4.1",
