@@ -36,7 +36,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       options: { fallbackToCustodyAddress: true },
     });
 
-
     const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
