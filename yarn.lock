@@ -902,7 +902,7 @@
     yaml "^2.3.1"
     zod "^3.22.3"
 
-"@thirdweb-dev/storage@2.0.9":
+"@thirdweb-dev/storage@2.0.9", "@thirdweb-dev/storage@^2.0.9":
   version "2.0.9"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/storage/-/storage-2.0.9.tgz#cbf739c9b843471d09ec024e09cd3dd0b67a732f"
   integrity sha512-KpttP1g0YBLv1NKqAr4xe9Pqey++tGBzgPbLzvBqNLXYa6BAuxtb01eTeWDsyLIx+WAWy0COBhqDQd4YNRawyQ==
