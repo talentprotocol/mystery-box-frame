@@ -45,6 +45,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
+    console.log({ fid, username });
 
     const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
@@ -81,10 +82,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const svg = await generateImageSvg(fid.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
-    console.log("claiming", accountAddress);
     await mintTo(accountAddress!, username!, image);
     await setClaimStatus(accountAddress!, ClaimStatus.CLAIMED);
-    console.log("claimed", accountAddress);
 
     return new NextResponse(
       getFrameHtml({
