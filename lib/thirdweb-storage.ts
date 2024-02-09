@@ -5,7 +5,7 @@ const storage = new ThirdwebStorage({
 });
 
 export const uploadToIPFS = async (image: Buffer) => {
-  const upload = await storage.upload(new Blob([image], { type: "image/png" }));
+  const upload = await storage.upload(image);
   console.log(upload);
   return upload;
 };
