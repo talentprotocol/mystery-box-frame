@@ -14,3 +14,5 @@ export const BASE_URL =
 export const ERROR_IMAGE_URL = `${BASE_URL}/error-img.png`;
 export const SUCCESS_IMAGE_URL = `${BASE_URL}/success-img.jpg`;
 export const SOLD_OUT_IMAGE_URL = `${BASE_URL}/sold-out-img.png`;
+
+export const SUPPLY_LIMIT = 10000;

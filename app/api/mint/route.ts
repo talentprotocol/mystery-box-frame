@@ -11,6 +11,7 @@ import {
   ERROR_IMAGE_URL,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
+  SUPPLY_LIMIT,
 } from "../../../lib/constants";
 import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
 import { generateImageSvg } from "../../../lib/svg";
@@ -48,8 +49,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.log("checking total supply");
     const totalSupply = await getTotalSupply();
     console.log(totalSupply, totalSupply.result);
-    console.log(parseInt(totalSupply.result!) >= 10000);
-    if (parseInt(totalSupply.result!) >= 10000) {
+    console.log(parseInt(totalSupply.result!) >= SUPPLY_LIMIT);
+    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
