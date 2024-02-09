@@ -54,7 +54,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
-          image: ERROR_IMAGE_URL,
+          image: SOLD_OUT_IMAGE_URL,
           buttons: [
             {
               label: "View the Farcaster Frenzy OG’s",
