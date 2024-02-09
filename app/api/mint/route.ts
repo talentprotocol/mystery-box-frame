@@ -63,8 +63,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       );
     }*/
     const isClaiming = await hasClaimed(accountAddress);
-    /*const accountBalance = await getBalanceOf(accountAddress!);
-    if (parseInt(accountBalance.result!) > 0) {
+    // const accountBalance = await getBalanceOf(accountAddress!);
+    if (isClaiming) {
       console.log("already claimed", accountAddress);
       return new NextResponse(
         getFrameHtml({
@@ -74,7 +74,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           postUrl: `https://link.airstack.xyz/frenzy`,
         })
       );
-    }*/
+    }
 
     await setClaimStatus(accountAddress!, ClaimStatus.PENDING);
 
