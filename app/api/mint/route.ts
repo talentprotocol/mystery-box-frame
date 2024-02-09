@@ -43,7 +43,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.log("getting balance of...");
     const accountBalance = await getBalanceOf(accountAddress!);
     console.log(accountBalance.result);
-    if (parseInt(accountBalance.result!) > 0) {
+    if (parseInt(accountBalance.result!) > 0 && false) {
       console.log("already claimed", accountAddress);
       return new NextResponse(
         getFrameHtml({

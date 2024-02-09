@@ -1,5 +1,6 @@
 import { Engine } from "@thirdweb-dev/engine";
 import { CHAIN, NFT_COLLECTION_ADDRESS } from "./constants";
+import { storeNFT } from "./nft-storage";
 
 const engine = new Engine({
   url: process.env.THIRDWEB_ENGINE_URL!,
@@ -11,6 +12,9 @@ export const mintTo = async (
   profileName: string,
   image: Buffer
 ) => {
+  const name = `${profileName} - Farcaster Frames Frenzy 2024 - OG`;
+  const description = `A collection of commemorative NFTs honoring the Farcasters who were there when Farcaster first blew up big during Farcaster Frames Frenzy, Jan-Feb 2024`;
+  const ipfsUrl = await storeNFT(image, name, description);
   await engine.erc721.mintTo(
     // chain
     CHAIN.chainId.toString(),
@@ -22,9 +26,9 @@ export const mintTo = async (
     {
       receiver: address,
       metadata: {
-        image: "IPFS_URI_HERE",
-        name: `${profileName} - Farcaster Frames Frenzy 2024 - OG`,
-        description: `A collection of commemorative NFTs honoring the Farcasters who were there when Farcaster first blew up big during Farcaster Frames Frenzy, Jan-Feb 2024`,
+        image: ipfsUrl,
+        name,
+        description,
       },
     }
   );
