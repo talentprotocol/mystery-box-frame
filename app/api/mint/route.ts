@@ -37,6 +37,15 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         })
       );
     }
+
+    return new NextResponse(
+      getFrameHtml({
+        version: "vNext",
+        image: ERROR_IMAGE_URL,
+        postUrl: `${BASE_URL}/api/mint`,
+      })
+    );
+
     accountAddress = await getAddressForFid({
       fid: body.untrustedData.fid,
       options: { fallbackToCustodyAddress: true },
