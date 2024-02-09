@@ -1,6 +1,5 @@
 import { Engine } from "@thirdweb-dev/engine";
 import { CHAIN, NFT_COLLECTION_ADDRESS } from "./constants";
-import { storeNFT } from "./nft-storage";
 import { uploadToIPFS } from "./thirdweb-storage";
 
 const engine = new Engine({
@@ -34,6 +33,13 @@ export const mintTo = async (
         description,
       },
     }
+  );
+};
+
+export const getTotalSupply = async () => {
+  return await engine.erc721.totalCount(
+    CHAIN.chainId.toString(),
+    NFT_COLLECTION_ADDRESS
   );
 };
 

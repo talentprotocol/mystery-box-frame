@@ -9,12 +9,17 @@ import {
 import {
   BASE_URL,
   ERROR_IMAGE_URL,
+  SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
 } from "../../../lib/constants";
 import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
-import { getBalanceOf, mintTo } from "../../../lib/thirdweb-engine";
+import {
+  getBalanceOf,
+  getTotalSupply,
+  mintTo,
+} from "../../../lib/thirdweb-engine";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -39,7 +44,27 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
-    // const didClaim = await hasClaimed(accountAddress!);
+
+    console.log("checking total supply");
+    const totalSupply = await getTotalSupply();
+    console.log(totalSupply, totalSupply.result);
+    console.log(parseInt(totalSupply.result!) >= 10000);
+    if (parseInt(totalSupply.result!) >= 10000) {
+      return new NextResponse(
+        getFrameHtml({
+          version: "vNext",
+          image: ERROR_IMAGE_URL,
+          buttons: [
+            {
+              label: "View the Farcaster Frenzy OG’s",
+              action: "post_redirect",
+            },
+          ],
+          postUrl: `https://link.airstack.xyz/frenzy`,
+        })
+      );
+    }
+    console.log({ totalSupply });
     console.log("getting balance of...");
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
