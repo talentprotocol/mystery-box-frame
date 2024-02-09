@@ -43,7 +43,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.log("getting balance of...");
     const accountBalance = await getBalanceOf(accountAddress!);
     console.log(accountBalance.result);
-    if (true) {
+    if (parseInt(accountBalance.result!) > 0) {
       console.log("already claimed", accountAddress);
       return new NextResponse(
         getFrameHtml({
@@ -74,7 +74,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
   } catch (e) {
     console.error(e);
-    //await setClaimStatus(accountAddress!, ClaimStatus.UNCLAIMED);
+    await setClaimStatus(accountAddress!, ClaimStatus.UNCLAIMED);
     return new NextResponse(
       getFrameHtml({
         version: "vNext",
