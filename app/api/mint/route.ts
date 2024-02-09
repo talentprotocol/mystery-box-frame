@@ -38,6 +38,11 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       );
     }
 
+    accountAddress = await getAddressForFid({
+      fid: body.untrustedData.fid,
+      options: { fallbackToCustodyAddress: true },
+    });
+
     return new NextResponse(
       getFrameHtml({
         version: "vNext",
@@ -45,11 +50,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         postUrl: `${BASE_URL}/api/mint`,
       })
     );
-
-    accountAddress = await getAddressForFid({
-      fid: body.untrustedData.fid,
-      options: { fallbackToCustodyAddress: true },
-    });
 
     const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
@@ -72,7 +72,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         })
       );
     }
-    const isClaiming = await hasClaimed(accountAddress);
+    const isClaiming = await hasClaimed(accountAddress!);
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
       console.log("already claimed", accountAddress);
