@@ -46,10 +46,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
 
-    console.log("checking total supply");
-    const totalSupply = await getTotalSupply();
-    console.log(totalSupply, totalSupply.result);
-    console.log(parseInt(totalSupply.result!) >= SUPPLY_LIMIT);
+    /*const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
       return new NextResponse(
         getFrameHtml({
@@ -64,11 +61,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           postUrl: `https://link.airstack.xyz/frenzy`,
         })
       );
-    }
-    console.log({ totalSupply });
-    console.log("getting balance of...");
-    const accountBalance = await getBalanceOf(accountAddress!);
-    if (parseInt(accountBalance.result!) > 0) {
+    }*/
+    const isClaiming = await hasClaimed(accountAddress);
+    //const accountBalance = await getBalanceOf(accountAddress!);
+    if (isClaiming) {
       console.log("already claimed", accountAddress);
       return new NextResponse(
         getFrameHtml({
