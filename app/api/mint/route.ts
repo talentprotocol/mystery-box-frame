@@ -48,7 +48,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         getFrameHtml({
           version: "vNext",
           image: SUCCESS_IMAGE_URL,
-          postUrl: `${BASE_URL}/nothing`,
+          buttons: [{ label: "View Your NFT", action: "post_redirect" }],
+          postUrl: `https://link.airstack.xyz/frenzy`,
         })
       );
     }
