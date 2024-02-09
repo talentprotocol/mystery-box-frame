@@ -6,7 +6,6 @@ import {
   getFrameMessage,
   validateFrameMessage,
 } from "frames.js";
-import { alreadyClaimed, claimNFT } from "../../../lib/thirdweb";
 import {
   BASE_URL,
   ERROR_IMAGE_URL,
@@ -15,13 +14,13 @@ import {
 import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
+import { getBalanceOf, mintTo } from "../../../lib/thirdweb-engine";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
-  console.log(process.env.NODE_ENV);
   try {
     const body: FrameActionPayload = await req.json();
-    const { isValid, message } = await validateFrameMessage(body);
+    const { isValid } = await validateFrameMessage(body);
     if (!isValid) {
       return new NextResponse(
         getFrameHtml({
@@ -41,8 +40,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
     // const didClaim = await hasClaimed(accountAddress!);
-    const didClaim = await alreadyClaimed(accountAddress!);
-    if (didClaim) {
+    console.log("getting balance of...");
+    const accountBalance = await getBalanceOf(accountAddress!);
+    console.log(accountBalance);
+    if (true) {
       console.log("already claimed", accountAddress);
       return new NextResponse(
         getFrameHtml({
@@ -59,8 +60,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
     console.log("claiming", accountAddress);
-    await claimNFT(accountAddress!, username!, image);
-    await setClaimStatus(accountAddress, ClaimStatus.CLAIMED);
+    await mintTo(accountAddress!, username!, image);
+    await setClaimStatus(accountAddress!, ClaimStatus.CLAIMED);
     console.log("claimed", accountAddress);
 
     return new NextResponse(
@@ -73,7 +74,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
   } catch (e) {
     console.error(e);
-    await setClaimStatus(accountAddress!, ClaimStatus.UNCLAIMED);
+    //await setClaimStatus(accountAddress!, ClaimStatus.UNCLAIMED);
     return new NextResponse(
       getFrameHtml({
         version: "vNext",

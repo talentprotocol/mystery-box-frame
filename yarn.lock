@@ -739,6 +739,11 @@
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/dynamic-contracts/-/dynamic-contracts-1.2.5.tgz#f9735c0d46198e7bf2f98c277f0a9a79c54da1e8"
   integrity sha512-YVsz+jUWbwj+6aF2eTZGMfyw47a1HRmgNl4LQ3gW9gwYL5y5+OX/yOzv6aV5ibvoqCk/k10aIVK2eFrcpMubQA==
 
+"@thirdweb-dev/engine@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@thirdweb-dev/engine/-/engine-0.0.5.tgz#411a4a07f51cb545b342352ec76bf9571d14e2af"
+  integrity sha512-R3x3dGUga4gq4GuCihse9Jq57Lnutvw0hjuIpRKS0CibiFMm5v6vNb7zv+FgF+7hNzAoI6yXocqSV1xOklPxEA==
+
 "@thirdweb-dev/generated-abis@0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@thirdweb-dev/generated-abis/-/generated-abis-0.0.1.tgz#0d788d6aff0ac08f11e9eeb9ae4c8321845272a8"
@@ -2213,10 +2218,10 @@ fraction.js@^4.3.7:
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
-frames.js@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/frames.js/-/frames.js-0.4.1.tgz#e0da6848267af82440ea9c84926f055a4268f977"
-  integrity sha512-rYjNOp8SzA4NKqf5E6KAfcg+JYRnM3w7ZQ9HAubVSl78MoNYwzuxKIK/sVuhA4UgesuLAPWKEIw3rvSQLneqJg==
+frames.js@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/frames.js/-/frames.js-0.4.2.tgz#787107c4c559dca73dce6f91176c50ddad7ce56c"
+  integrity sha512-qao58DishwrOkT5XZIHJ9trxlwc1DGbX2x7Jg6P92jfJhVlP7lxRPgH88LGv/OqHhd/NFdLLsdJQDoGktBwgdA==
   dependencies:
     "@farcaster/core" "^0.13.7"
     "@vercel/og" "^0.6.2"
@@ -4191,9 +4196,9 @@ viem@^1.12.2:
     ws "8.13.0"
 
 viem@^2.7.1:
-  version "2.7.6"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.6.tgz#2ada30ece1469367b606137983e5655cf66d721e"
-  integrity sha512-43TF0VYcTeNef9dax1/BhqlRLXpAo6HAiQ68hrJ8XRhDOou73nHZEjeFl8Eai4UFFodKhu+PbRUFzuuoixOUfg==
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.7.8.tgz#ca60552190cdc501cf4e1d1140d8da7625b1b1f4"
+  integrity sha512-5r5pkBDBmihCvMx4b3MqtP0FoZCRWE2ML1DssU80+vhJQur0PKd4yHdLbbvoiGGVD6bYiA394juhfdSvXIGgFA==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"
