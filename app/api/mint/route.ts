@@ -33,6 +33,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
           version: "vNext",
           image: ERROR_IMAGE_URL,
           buttons: [{ label: "Try Again", action: "post" }],
+          postUrl: `${BASE_URL}/api/mint`,
         })
       );
     }
