@@ -1,5 +1,5 @@
 import { fetchAllPagesQuery } from ".";
-import { PoaPsOwnedQuery } from "./types";
+import { PoaPsOwnedQuery, Poap } from "./types";
 
 const query = /* GraphQL */ `
   query POAPsOwned($address: Identity!) {
@@ -28,9 +28,7 @@ const query = /* GraphQL */ `
   }
 `;
 
-export const fetchNonVirtualPoapsOwned = async (
-  address: string
-): Promise<any> => {
+export const fetchNonVirtualPoapsOwned = async (address: string) => {
   const response = await fetchAllPagesQuery<PoaPsOwnedQuery>(query, {
     address,
   });

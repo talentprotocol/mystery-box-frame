@@ -44,14 +44,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       options: { fallbackToCustodyAddress: true },
     });
 
-    return new NextResponse(
-      getFrameHtml({
-        version: "vNext",
-        image: ERROR_IMAGE_URL,
-        postUrl: `${BASE_URL}/api/mint`,
-      })
-    );
-
     /*const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
@@ -60,11 +52,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       accountAddress!
     );
 
+    console.log({ farcasterProfile, isSpam });
+
     if (isSpam) {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
-          image: SOLD_OUT_IMAGE_URL,
+          image: ERROR_IMAGE_URL,
           buttons: [
             {
               label: "View the Farcaster Frenzy OG’s",
@@ -79,7 +73,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     const totalSupply = await getTotalSupply();
-    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
+    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT || true) {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
