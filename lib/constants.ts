@@ -16,3 +16,5 @@ export const SUCCESS_IMAGE_URL = `${BASE_URL}/success-img.jpg`;
 export const SOLD_OUT_IMAGE_URL = `${BASE_URL}/sold-out-img.png`;
 
 export const SUPPLY_LIMIT = 10000;
+export const SPAM_FARCASTER_FOLLOWER_THRESHOLD = 200;
+export const SPAM_VIRTUAL_POAPS_THRESHOLD = 1;

@@ -21,6 +21,7 @@ import {
   getTotalSupply,
   mintTo,
 } from "../../../lib/thirdweb-engine";
+import { checkIfAddressIsSpam } from "../../../lib/spam-filtering";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -51,10 +52,30 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       })
     );
 
-    const frameMessage = await getFrameMessage(body);
+    /*const frameMessage = await getFrameMessage(body);
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
-    console.log({ fid, username });
+    console.log({ fid, username });*/
+    const { farcasterProfile, isSpam } = await checkIfAddressIsSpam(
+      accountAddress!
+    );
+    const { userId: fid, profileHandle: username } = farcasterProfile!;
+
+    if (isSpam) {
+      return new NextResponse(
+        getFrameHtml({
+          version: "vNext",
+          image: SOLD_OUT_IMAGE_URL,
+          buttons: [
+            {
+              label: "View the Farcaster Frenzy OG’s",
+              action: "post_redirect",
+            },
+          ],
+          postUrl: `https://link.airstack.xyz/frenzy`,
+        })
+      );
+    }
 
     const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
@@ -88,7 +109,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     await setClaimStatus(accountAddress!, ClaimStatus.PENDING);
 
-    const svg = await generateImageSvg(fid.toString(), username!);
+    const svg = await generateImageSvg(fid!.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
     await mintTo(accountAddress!, username!, image);

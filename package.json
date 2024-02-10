@@ -6,16 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate": "npx graphql-codegen"
   },
   "dependencies": {
+    "@airstack/node": "^0.0.5",
+    "@apollo/client": "^3.9.4",
     "@noble/ed25519": "^2.0.0",
     "@thirdweb-dev/engine": "^0.0.5",
     "@thirdweb-dev/sdk": "^4",
     "@thirdweb-dev/storage": "^2.0.9",
     "@vercel/kv": "^1.0.1",
     "ethers": "^5",
-    "frames.js": "^0.4.2",
+    "frames.js": "^0.4.3",
     "next": "14.1.0",
     "nft.storage": "^7.1.1",
     "qrcode.react": "^3.1.0",
@@ -29,6 +32,10 @@
     "node": ">=18.17.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.4",
+    "@graphql-codegen/typescript-operations": "^4.1.2",
+    "@parcel/watcher": "^2.4.0",
     "@types/node": "^18.17.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
