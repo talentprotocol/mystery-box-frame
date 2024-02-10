@@ -8,7 +8,7 @@ import {
 export const checkIfAddressIsSpam = async (address: string) => {
   const farcasterProfile = await fetchFarcasterProfileInfo(address);
   if (!farcasterProfile) {
-    return { passSpamCheck: false };
+    return { farcasterProfile: null, passSpamCheck: false };
   }
   const nonVirtualPoaps = await fetchNonVirtualPoapsOwned(address);
   return {

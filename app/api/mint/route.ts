@@ -59,7 +59,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const { farcasterProfile, isSpam } = await checkIfAddressIsSpam(
       accountAddress!
     );
-    const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     if (isSpam) {
       return new NextResponse(
@@ -76,6 +75,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         })
       );
     }
+
+    const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
