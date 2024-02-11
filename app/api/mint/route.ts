@@ -22,12 +22,15 @@ import {
   mintTo,
 } from "../../../lib/thirdweb-engine";
 import { isAddressEligible } from "../../../lib/mint-gating";
+import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
   try {
     const body: FrameActionPayload = await req.json();
-    const { isValid } = await validateFrameMessage(body);
+    const { valid: isValid } = await validateFrameMessageWithNeynar(
+      body.trustedData.messageBytes
+    );
     if (!isValid) {
       return new NextResponse(
         getFrameHtml({

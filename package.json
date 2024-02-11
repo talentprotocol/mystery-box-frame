@@ -12,6 +12,7 @@
   "dependencies": {
     "@airstack/node": "^0.0.5",
     "@apollo/client": "^3.9.4",
+    "@neynar/nodejs-sdk": "^1.9.6",
     "@noble/ed25519": "^2.0.0",
     "@thirdweb-dev/engine": "^0.0.5",
     "@thirdweb-dev/sdk": "^4",
