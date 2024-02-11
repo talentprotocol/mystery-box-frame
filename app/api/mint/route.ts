@@ -13,7 +13,6 @@ import {
   SUCCESS_IMAGE_URL,
   SUPPLY_LIMIT,
 } from "../../../lib/constants";
-import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
 import {
@@ -28,7 +27,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
   try {
     const body: FrameActionPayload = await req.json();
-    const { valid: isValid } = await validateFrameMessageWithNeynar(
+    const { valid: isValid, action } = await validateFrameMessageWithNeynar(
       body.trustedData.messageBytes
     );
     if (!isValid) {
@@ -43,14 +42,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
 
     accountAddress = await getAddressForFid({
-      fid: body.untrustedData.fid,
+      fid: action?.interactor.fid!,
       options: { fallbackToCustodyAddress: true },
     });
 
-    /*const frameMessage = await getFrameMessage(body);
-    const fid = frameMessage.requesterFid;
-    const username = frameMessage.requesterUserData?.username;
-    console.log({ fid, username });*/
     const { farcasterProfile, isEligible } = await isAddressEligible(
       accountAddress!
     );
@@ -104,13 +99,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    await setClaimStatus(accountAddress!, ClaimStatus.PENDING);
-
     const svg = await generateImageSvg(fid!.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
     await mintTo(accountAddress!, username!, image);
-    await setClaimStatus(accountAddress!, ClaimStatus.CLAIMED);
 
     return new NextResponse(
       getFrameHtml({
@@ -122,7 +114,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
   } catch (e) {
     console.error(e);
-    await setClaimStatus(accountAddress!, ClaimStatus.UNCLAIMED);
     return new NextResponse(
       getFrameHtml({
         version: "vNext",
