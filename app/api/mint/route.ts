@@ -3,12 +3,12 @@ import {
   FrameActionPayload,
   getAddressForFid,
   getFrameHtml,
-  getFrameMessage,
   validateFrameMessage,
 } from "frames.js";
 import {
   BASE_URL,
   ERROR_IMAGE_URL,
+  NOT_ELIGIBLE_IMAGE_URL,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
   SUPPLY_LIMIT,
@@ -21,7 +21,7 @@ import {
   getTotalSupply,
   mintTo,
 } from "../../../lib/thirdweb-engine";
-import { checkIfAddressIsSpam } from "../../../lib/spam-filtering";
+import { isAddressEligible } from "../../../lib/mint-gating";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -48,17 +48,17 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const fid = frameMessage.requesterFid;
     const username = frameMessage.requesterUserData?.username;
     console.log({ fid, username });*/
-    const { farcasterProfile, isSpam } = await checkIfAddressIsSpam(
+    const { farcasterProfile, isEligible } = await isAddressEligible(
       accountAddress!
     );
 
-    console.log({ farcasterProfile, isSpam });
+    console.log({ farcasterProfile, isEligible });
 
-    if (isSpam) {
+    if (!isEligible) {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
-          image: ERROR_IMAGE_URL,
+          image: NOT_ELIGIBLE_IMAGE_URL,
           buttons: [
             {
               label: "View the Farcaster Frenzy OG’s",
@@ -73,7 +73,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     const totalSupply = await getTotalSupply();
-    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT || true) {
+    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
       return new NextResponse(
         getFrameHtml({
           version: "vNext",
@@ -88,7 +88,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         })
       );
     }
-    const isClaiming = await hasClaimed(accountAddress!);
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
       console.log("already claimed", accountAddress);

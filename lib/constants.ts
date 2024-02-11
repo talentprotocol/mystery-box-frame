@@ -11,10 +11,15 @@ export const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://frenzy.airstack.xyz"
     : "http://localhost:3001";
-export const ERROR_IMAGE_URL = `${BASE_URL}/error-img.png`;
-export const SUCCESS_IMAGE_URL = `${BASE_URL}/success-img.jpg`;
-export const SOLD_OUT_IMAGE_URL = `${BASE_URL}/sold-out-img.png`;
+
+export const COVER_IMAGE_URL = `${BASE_URL}/cover.png`;
+export const ERROR_IMAGE_URL = `${BASE_URL}/error.png`;
+export const SUCCESS_IMAGE_URL = `${BASE_URL}/success.png`;
+export const SOLD_OUT_IMAGE_URL = `${BASE_URL}/sold-out.png`;
+export const NOT_ELIGIBLE_IMAGE_URL = `${BASE_URL}/not-eligible.png`;
 
 export const SUPPLY_LIMIT = 10000;
-export const SPAM_FARCASTER_FOLLOWER_THRESHOLD = 200;
-export const SPAM_VIRTUAL_POAPS_THRESHOLD = 1;
+export const MINTING_ELIGIBILITY_CRITERIA = {
+  farcasterFollowersThreshold: 200,
+  virtualPoapsThreshold: 1,
+};

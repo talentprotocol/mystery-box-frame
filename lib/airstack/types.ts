@@ -1570,7 +1570,7 @@ export type FarcasterFollowersQueryVariables = Exact<{
 export type FarcasterFollowersQuery = { Socials: { Social: Array<{ followerCount: number | null, userAddress: any | null, profileHandle: string | null, userId: string | null }> | null } | null };
 
 export type PoaPsOwnedQueryVariables = Exact<{
-  sender: Scalars['Identity']['input'];
+  address: Scalars['Identity']['input'];
 }>;
 
 

@@ -7,7 +7,7 @@ import {
   getFrameMessage,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { BASE_URL } from "../lib/constants";
+import { BASE_URL, COVER_IMAGE_URL } from "../lib/constants";
 
 // This is a react server component only
 export default async function Home({
@@ -41,7 +41,7 @@ export default async function Home({
         state={null}
         previousFrame={previousFrame}
       >
-        <FrameImage src={`${BASE_URL}/base-img.jpg`} />
+        <FrameImage src={COVER_IMAGE_URL} />
         <FrameButton>Mint your Custom OG NFT</FrameButton>
       </FrameContainer>
     </div>
