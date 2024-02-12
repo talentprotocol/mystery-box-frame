@@ -36,13 +36,13 @@ export default async function Home({
         Debug
       </Link>
       <FrameContainer
-        pathname={`${BASE_URL}/api/mint`}
-        postUrl={`${BASE_URL}/api/mint`}
+        pathname={`${BASE_URL}/api/captcha`}
+        postUrl={`${BASE_URL}/api/captcha`}
         state={null}
         previousFrame={previousFrame}
       >
         <FrameImage src={COVER_IMAGE_URL} />
-        <FrameButton>Mint your Custom OG NFT</FrameButton>
+        <FrameButton>Mint your Custom OG NFT!</FrameButton>
       </FrameContainer>
     </div>
   );

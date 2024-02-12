@@ -17,6 +17,10 @@ export const ERROR_IMAGE_URL = `${BASE_URL}/error.png`;
 export const SUCCESS_IMAGE_URL = `${BASE_URL}/success.png`;
 export const SOLD_OUT_IMAGE_URL = `${BASE_URL}/sold-out.png`;
 export const NOT_ELIGIBLE_IMAGE_URL = `${BASE_URL}/not-eligible.png`;
+export const CAPTCHA_IMAGE_URL = `${BASE_URL}/captcha.png`;
+export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
+
+export const REDIRECT_LINK = "https://link.airstack.xyz/horizon";
 
 export const SUPPLY_LIMIT = 10000;
 export const MINTING_ELIGIBILITY_CRITERIA = {

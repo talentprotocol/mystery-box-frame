@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  FrameActionPayload,
-  getAddressForFid,
-  getFrameHtml,
-  validateFrameMessage,
-} from "frames.js";
+import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
 import {
   BASE_URL,
   ERROR_IMAGE_URL,
   NOT_ELIGIBLE_IMAGE_URL,
+  REDIRECT_LINK,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
   SUPPLY_LIMIT,
@@ -22,6 +18,12 @@ import {
 } from "../../../lib/thirdweb-engine";
 import { isAddressEligible } from "../../../lib/mint-gating";
 import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
+import {
+  NOT_ELIGIBLE_RESPONSE,
+  SOLD_OUT_RESPONSE,
+  SUCCESS_RESPONSE,
+  TRY_AGAIN_RESPONSE,
+} from "../../../lib/frame-utils";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -31,14 +33,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       body.trustedData.messageBytes
     );
     if (!isValid) {
-      return new NextResponse(
-        getFrameHtml({
-          version: "vNext",
-          image: ERROR_IMAGE_URL,
-          buttons: [{ label: "Try Again", action: "post" }],
-          postUrl: `${BASE_URL}/api/mint`,
-        })
-      );
+      return new NextResponse(TRY_AGAIN_RESPONSE);
     }
 
     accountAddress = await getAddressForFid({
@@ -50,53 +45,20 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       accountAddress!
     );
 
-    console.log({ farcasterProfile, isEligible });
-
     if (!isEligible) {
-      return new NextResponse(
-        getFrameHtml({
-          version: "vNext",
-          image: NOT_ELIGIBLE_IMAGE_URL,
-          buttons: [
-            {
-              label: "View the Farcaster Frenzy OG’s",
-              action: "post_redirect",
-            },
-          ],
-          postUrl: `https://link.airstack.xyz/frenzy`,
-        })
-      );
+      return new NextResponse(NOT_ELIGIBLE_RESPONSE);
     }
 
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
-      return new NextResponse(
-        getFrameHtml({
-          version: "vNext",
-          image: SOLD_OUT_IMAGE_URL,
-          buttons: [
-            {
-              label: "View the Farcaster Frenzy OG’s",
-              action: "post_redirect",
-            },
-          ],
-          postUrl: `https://link.airstack.xyz/frenzy`,
-        })
-      );
+      return new NextResponse(SOLD_OUT_RESPONSE);
     }
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
       console.log("already claimed", accountAddress);
-      return new NextResponse(
-        getFrameHtml({
-          version: "vNext",
-          image: SUCCESS_IMAGE_URL,
-          buttons: [{ label: "View Your NFT", action: "post_redirect" }],
-          postUrl: `https://link.airstack.xyz/frenzy`,
-        })
-      );
+      return new NextResponse(SUCCESS_RESPONSE);
     }
 
     const svg = await generateImageSvg(fid!.toString(), username!);
@@ -104,24 +66,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     await mintTo(accountAddress!, username!, image);
 
-    return new NextResponse(
-      getFrameHtml({
-        version: "vNext",
-        image: SUCCESS_IMAGE_URL,
-        buttons: [{ label: "View Your NFT", action: "post_redirect" }],
-        postUrl: `https://link.airstack.xyz/frenzy`,
-      })
-    );
+    return new NextResponse(SUCCESS_RESPONSE);
   } catch (e) {
     console.error(e);
-    return new NextResponse(
-      getFrameHtml({
-        version: "vNext",
-        image: ERROR_IMAGE_URL,
-        buttons: [{ label: "Try Again", action: "post" }],
-        postUrl: `${BASE_URL}/api/mint`,
-      })
-    );
+    return new NextResponse(TRY_AGAIN_RESPONSE);
   }
 }
 

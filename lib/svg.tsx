@@ -1,13 +1,20 @@
 import { join } from "path";
 import satori from "satori";
 import * as fs from "fs";
+import { BASE_URL } from "./constants";
 
 const fontPath = join(process.cwd(), "Inter-SemiBold.ttf");
 let fontData = fs.readFileSync(fontPath);
 
-const backgroundImagePath = join(process.cwd(), "public", "nft-base-img.jpg");
+const backgroundImagePath = join(process.cwd(), "public", "nft-base.jpg");
 const backgroundImageData = fs.readFileSync(backgroundImagePath);
 const backgroundImageBase64 = `data:image/jpeg;base64,${backgroundImageData.toString(
+  "base64"
+)}`;
+
+const captchaImagePath = join(process.cwd(), "public", "captcha.png");
+const captchaImageData = fs.readFileSync(captchaImagePath);
+const captchaImageBase64 = `data:image/png;base64,${captchaImageData.toString(
   "base64"
 )}`;
 
@@ -60,6 +67,59 @@ export const generateImageSvg = async (
     </div>,
     {
       width: 1024,
+      height: 1024,
+      fonts: [
+        {
+          data: fontData,
+          name: "Inter-SemiBold.ttf",
+          style: "normal",
+          weight: 400,
+        },
+      ],
+    }
+  );
+};
+
+export const generateCaptchaImageSvg = async (
+  numA: number,
+  numB: number
+): Promise<string> => {
+  return await satori(
+    <div
+      style={{
+        backgroundImage: `url(${captchaImageBase64})`,
+        backgroundSize: "contain", // or 'contain' depending on your needs
+        display: "flex",
+        flexDirection: "row",
+        alignContent: "center",
+        justifyContent: "space-around",
+        position: "relative",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#FFF",
+          position: "absolute",
+          right: 200,
+          display: "flex",
+          bottom: 380,
+          fontSize: "50px",
+          borderRadius: "8px",
+          fontFamily: "Inter-SemiBold", // use the font name here
+          color: "#000", // change this to the color you want for the text
+          paddingTop: "10px",
+          paddingBottom: "10px",
+          paddingRight: "100px",
+          paddingLeft: "100px",
+        }}
+      >
+        {numA} + {numB}
+      </div>
+    </div>,
+    {
+      width: 1958,
       height: 1024,
       fonts: [
         {
