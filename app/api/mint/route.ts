@@ -54,11 +54,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
-    console.time("getTotalSupply");
+    console.time("supply and balance checks");
     const { balance, totalSupply } = await fetchNftTokenBalance(
       `fc_fid:${fid}`,
       process.env.NFT_CONTRACT_ADDRESS!
     );
+    console.timeEnd("supply and balance checks");
     if (parseInt(totalSupply as string) >= SUPPLY_LIMIT) {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
@@ -68,7 +69,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       console.error("Already minted");
       return new NextResponse(SUCCESS_RESPONSE);
     }
-    console.timeEnd("getBalanceOf");
 
     const svg = await generateImageSvg(fid!.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
