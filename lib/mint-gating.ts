@@ -3,7 +3,8 @@ import { fetchNonVirtualPoapsOwned } from "./airstack/virtual-poaps";
 import { MINTING_ELIGIBILITY_CRITERIA } from "./constants";
 
 export const isAddressEligible = async (
-  address: string
+  address: string,
+  fid: string
 ): Promise<{
   farcasterProfile?: {
     followerCount: number | null;
@@ -13,7 +14,8 @@ export const isAddressEligible = async (
   } | null;
   isEligible: boolean;
 }> => {
-  const farcasterProfile = await fetchFarcasterProfileInfo(address);
+  console.log(address);
+  const farcasterProfile = await fetchFarcasterProfileInfo(fid);
   // If the user has no farcaster profile, they are eligible for minting
   if (!farcasterProfile) {
     return { farcasterProfile: undefined, isEligible: false };

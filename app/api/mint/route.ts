@@ -45,8 +45,9 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
 
     console.time("getAddressFromFid");
+    const fid = action?.interactor.fid;
     accountAddress = await getAddressForFid({
-      fid: action?.interactor?.fid!,
+      fid: fid!,
       options: {
         fallbackToCustodyAddress: true,
         hubRequestOptions: {
@@ -58,8 +59,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     console.time("isAddressEligible");
     const { farcasterProfile, isEligible } = await isAddressEligible(
-      accountAddress!
+      accountAddress!,
+      fid!.toString()
     );
+    console.log({ farcasterProfile, isEligible });
     console.timeEnd("isAddressEligible");
 
     if (!isEligible) {
@@ -67,7 +70,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(NOT_ELIGIBLE_RESPONSE);
     }
 
-    const { userId: fid, profileHandle: username } = farcasterProfile!;
+    const { profileHandle: username } = farcasterProfile!;
 
     console.time("supply and balance checks");
     const { balance, totalSupply } = await fetchNftTokenBalance(
