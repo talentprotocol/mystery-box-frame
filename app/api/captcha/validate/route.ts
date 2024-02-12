@@ -7,6 +7,7 @@ import {
 } from "../../../../lib/constants";
 import { validateCaptchaChallenge } from "../../../../lib/captcha";
 import {
+  INVALID_CAPTCHA_RESPONSE,
   REQUEST_MINT_RESPONSE,
   TRY_AGAIN_RESPONSE,
 } from "../../../../lib/frame-utils";
@@ -34,7 +35,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
   if (!isValid) {
     console.error("Invalid captcha", { captchaId, inputText });
-    return new NextResponse(TRY_AGAIN_RESPONSE);
+    return new NextResponse(INVALID_CAPTCHA_RESPONSE);
   }
 
   return new NextResponse(REQUEST_MINT_RESPONSE);

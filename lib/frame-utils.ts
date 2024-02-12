@@ -3,6 +3,7 @@ import {
   BASE_URL,
   CAPTCHA_IMAGE_URL,
   ERROR_IMAGE_URL,
+  INVALID_CAPTCHA_IMAGE_URL,
   LETS_GO_IMAGE_URL,
   NOT_ELIGIBLE_IMAGE_URL,
   REDIRECT_LINK,
@@ -18,6 +19,13 @@ export const START_RESPONSE = (captchaId: string) =>
     buttons: [{ label: "Enter", action: "post" }],
     postUrl: `${BASE_URL}/api/captcha/validate?id=${captchaId}`,
   });
+
+export const INVALID_CAPTCHA_RESPONSE = getFrameHtml({
+  version: "vNext",
+  image: INVALID_CAPTCHA_IMAGE_URL,
+  buttons: [{ label: "Try Again", action: "post" }],
+  postUrl: `${BASE_URL}/api/captcha`,
+});
 
 export const TRY_AGAIN_RESPONSE = getFrameHtml({
   version: "vNext",
