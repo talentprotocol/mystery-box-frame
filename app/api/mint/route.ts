@@ -17,6 +17,7 @@ import {
   TRY_AGAIN_RESPONSE,
 } from "../../../lib/frame-utils";
 import { fetchNftTokenBalance } from "../../../lib/airstack/token-balance";
+import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -65,8 +66,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
-
-    if (parseInt(balance as string) > 0) {
+    const didClaim = await hasClaimed(accountAddress);
+    if (parseInt(balance as string) > 0 || didClaim) {
       console.error("Already minted");
       return new NextResponse(SUCCESS_RESPONSE);
     }
@@ -76,11 +77,15 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     console.time("mintTo");
     await mintTo(accountAddress!, username!, image);
+    await setClaimStatus(accountAddress, ClaimStatus.CLAIMED);
     console.timeEnd("mintTo");
 
     return new NextResponse(SUCCESS_RESPONSE);
   } catch (e) {
     console.error(e);
+    if (accountAddress) {
+      await setClaimStatus(accountAddress, ClaimStatus.UNCLAIMED);
+    }
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
 }

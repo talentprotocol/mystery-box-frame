@@ -10,7 +10,7 @@ export const setClaimStatus = async (address: string, status: ClaimStatus) => {
   return await kv.set(address, status);
 };
 
-export const hasClaimed = async (address: string) => {
+export const hasClaimed = async (address: string): Promise<boolean> => {
   const claimed = await kv.get(address);
   console.log(claimed);
   return (
