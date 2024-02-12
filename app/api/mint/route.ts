@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
-import { SUPPLY_LIMIT } from "../../../lib/constants";
+import { NFT_COLLECTION_ADDRESS, SUPPLY_LIMIT } from "../../../lib/constants";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
 import {
@@ -57,7 +57,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.time("supply and balance checks");
     const { balance, totalSupply } = await fetchNftTokenBalance(
       `fc_fid:${fid}`,
-      process.env.NFT_CONTRACT_ADDRESS!
+      NFT_COLLECTION_ADDRESS
     );
     console.timeEnd("supply and balance checks");
     if (parseInt(totalSupply as string) >= SUPPLY_LIMIT) {

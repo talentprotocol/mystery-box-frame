@@ -1,5 +1,7 @@
-import { fetchQuery } from "@airstack/node";
+import { fetchQuery, init } from "@airstack/node";
 import { NftTokenBalanceQuery } from "./types";
+
+init(process.env.AIRSTACK_API_KEY!);
 
 const query = /* GraphQL */ `
   query NFTTokenBalance($owner: Identity!, $token: Address!) {
@@ -34,10 +36,12 @@ export const fetchNftTokenBalance = async (
   owner: string,
   token: string
 ): Promise<{ balance: string | number; totalSupply: string | number }> => {
+  console.log(owner, token);
   const { data, error }: QueryResponse = await fetchQuery(query, {
     owner,
     token,
   });
+  console.log(data);
   if (error || !data) {
     throw new Error(`Error fetching token balance: ${error?.message}`);
   }
