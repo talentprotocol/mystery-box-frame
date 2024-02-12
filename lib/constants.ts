@@ -1,15 +1,16 @@
-import { Sepolia, Base } from "@thirdweb-dev/chains";
+import { BaseSepoliaTestnet, Base } from "@thirdweb-dev/chains";
 
 export const NFT_COLLECTION_ADDRESS =
   process.env.NODE_ENV === "production"
-    ? "0x97927D9b00e870A69D165858E2CeC9FeE3A83471"
-    : "0xb5e17d0BC5446a8a75cC3A16706e71137b8A2809";
+    ? "0x4c17fF12D9A925A0DeC822a8cBF06F46c626855c"
+    : "0x51eF9B78658Dd74512AE834C49Edc6a6f8CD245c";
 
-export const CHAIN = process.env.NODE_ENV === "production" ? Base : Sepolia;
+export const CHAIN =
+  process.env.NODE_ENV === "production" ? Base : BaseSepoliaTestnet;
 
 export const BASE_URL =
   process.env.NODE_ENV === "production"
-    ? "https://frenzy.airstack.xyz"
+    ? "https://frames.airstack.xyz"
     : "http://localhost:3001";
 
 export const COVER_IMAGE_URL = `${BASE_URL}/cover.png`;

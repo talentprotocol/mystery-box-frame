@@ -12,8 +12,8 @@ export const mintTo = async (
   profileName: string,
   image: Buffer
 ) => {
-  const name = `${profileName} - Farcaster Frames Frenzy 2024 - OG`;
-  const description = `A collection of commemorative NFTs honoring the Farcasters who were there when Farcaster first blew up big during Farcaster Frames Frenzy, Jan-Feb 2024`;
+  const name = `${profileName} - Farcaster Horizon - OG`;
+  const description = `Celebrate Farcaster's growth to 100K MAU with your personalized Farcaster Horizon OG NFT. Each NFT in the collection contains the unique FID and username of the minter.`;
   const ipfsUrl = await uploadToIPFS(image);
   await engine.erc721.mintTo(
     // chain
