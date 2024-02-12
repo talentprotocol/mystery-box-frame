@@ -14,9 +14,7 @@ export const mintTo = async (
 ) => {
   const name = `${profileName} - Farcaster Frames Frenzy 2024 - OG`;
   const description = `A collection of commemorative NFTs honoring the Farcasters who were there when Farcaster first blew up big during Farcaster Frames Frenzy, Jan-Feb 2024`;
-  console.log("storing nft");
   const ipfsUrl = await uploadToIPFS(image);
-  console.log("nft stored", ipfsUrl);
   await engine.erc721.mintTo(
     // chain
     CHAIN.chainId.toString(),
