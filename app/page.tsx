@@ -41,7 +41,6 @@ export default async function Home({
         </Link>
       )}
       <FrameContainer
-        pathname={`${BASE_URL}/api/captcha`}
         postUrl={`${BASE_URL}/api/captcha`}
         state={null}
         previousFrame={previousFrame}
