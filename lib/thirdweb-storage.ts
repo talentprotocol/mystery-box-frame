@@ -4,8 +4,12 @@ const storage = new ThirdwebStorage({
   secretKey: process.env.THIRDWEB_SECRET_KEY,
 });
 
-export const uploadToIPFS = async (image: Buffer) => {
-  const upload = await storage.upload(image);
+export const uploadToIPFS = async (data: {
+  image: Buffer;
+  name: string;
+  description: string;
+}) => {
+  const upload = await storage.upload(data);
   console.log(upload);
   return upload;
 };
