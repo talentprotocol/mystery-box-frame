@@ -34,12 +34,13 @@ export const TRY_AGAIN_RESPONSE = getFrameHtml({
   postUrl: `${BASE_URL}/api/captcha`,
 });
 
-export const REQUEST_MINT_RESPONSE = getFrameHtml({
-  version: "vNext",
-  image: LETS_GO_IMAGE_URL,
-  buttons: [{ label: "Request Mint", action: "post" }],
-  postUrl: `${BASE_URL}/api/mint`,
-});
+export const REQUEST_MINT_RESPONSE = (captchaId: string, result: string) =>
+  getFrameHtml({
+    version: "vNext",
+    image: LETS_GO_IMAGE_URL,
+    buttons: [{ label: "Request Mint", action: "post" }],
+    postUrl: `${BASE_URL}/api/mint?id=${captchaId}&result=${result}`,
+  });
 
 export const SUCCESS_RESPONSE = getFrameHtml({
   version: "vNext",

@@ -3,11 +3,7 @@ import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
 import { NFT_COLLECTION_ADDRESS, SUPPLY_LIMIT } from "../../../lib/constants";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
-import {
-  getBalanceOf,
-  getTotalSupply,
-  mintTo,
-} from "../../../lib/thirdweb-engine";
+import { mintTo } from "../../../lib/thirdweb-engine";
 import { isAddressEligible } from "../../../lib/mint-gating";
 import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 import {
@@ -17,10 +13,28 @@ import {
   TRY_AGAIN_RESPONSE,
 } from "../../../lib/frame-utils";
 import { fetchNftTokenBalance } from "../../../lib/airstack/token-balance";
-import { ClaimStatus, hasClaimed, setClaimStatus } from "../../../lib/redis";
+import {
+  deleteCaptchaChallenge,
+  validateCaptchaChallenge,
+} from "../../../lib/captcha";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
+  const { searchParams } = new URL(req.url);
+  const captchaId = searchParams.get("id");
+  const result = searchParams.get("result");
+
+  if (!captchaId || !result) {
+    return new NextResponse(TRY_AGAIN_RESPONSE);
+  }
+  const isCaptchaValid = await validateCaptchaChallenge(
+    captchaId,
+    parseInt(result)
+  );
+  if (!isCaptchaValid) {
+    return new NextResponse(TRY_AGAIN_RESPONSE);
+  }
+  await deleteCaptchaChallenge(captchaId);
   try {
     const body: FrameActionPayload = await req.json();
     const { valid: isValid, action } = await validateFrameMessageWithNeynar(
@@ -66,9 +80,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
-    
-    const didClaim = await hasClaimed(accountAddress);
-    if (parseInt(balance as string) > 0 || didClaim) {
+
+    if (parseInt(balance as string) > 0) {
       console.error("Already minted");
       return new NextResponse(SUCCESS_RESPONSE);
     }
@@ -78,15 +91,10 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     console.time("mintTo");
     await mintTo(accountAddress!, username!, image);
-    await setClaimStatus(accountAddress, ClaimStatus.CLAIMED);
     console.timeEnd("mintTo");
 
     return new NextResponse(SUCCESS_RESPONSE);
   } catch (e) {
-    console.error(e);
-    if (accountAddress) {
-      await setClaimStatus(accountAddress, ClaimStatus.UNCLAIMED);
-    }
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
 }

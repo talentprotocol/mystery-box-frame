@@ -1,4 +1,5 @@
 import { kv } from "@vercel/kv";
+import { id } from "ethers/lib/utils";
 import { v4 as uuidv4 } from "uuid";
 
 export const generateRandomNumberInRange = (start: number, end: number) =>
@@ -28,6 +29,9 @@ export const generateCaptchaChallenge = () => {
   console.log(numA, numB);
   return storeCaptchaChallenge({ numA, numB, result: numA + numB });
 };
+
+export const deleteCaptchaChallenge = async (id: string) =>
+  await kv.set(`captcha/${id}`, null);
 
 export const validateCaptchaChallenge = async (id: string, result: number) => {
   const captchaChallenge = await getCaptchaChallenge(id);

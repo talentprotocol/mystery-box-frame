@@ -38,7 +38,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     return new NextResponse(INVALID_CAPTCHA_RESPONSE);
   }
 
-  return new NextResponse(REQUEST_MINT_RESPONSE);
+  return new NextResponse(REQUEST_MINT_RESPONSE(captchaId, inputText));
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
