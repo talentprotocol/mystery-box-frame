@@ -19,7 +19,7 @@ export const mintTo = async (
     chain: CHAIN.chainId.toString(),
     contractAddress: NFT_COLLECTION_ADDRESS,
   });
-  await engine.erc721.mintTo(
+  engine.erc721.mintTo(
     // chain
     CHAIN.chainId.toString(),
     // contract address
