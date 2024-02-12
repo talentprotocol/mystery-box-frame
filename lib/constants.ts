@@ -8,10 +8,9 @@ export const NFT_COLLECTION_ADDRESS =
 export const CHAIN =
   process.env.NODE_ENV === "production" ? Base : BaseSepoliaTestnet;
 
-export const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://frames.airstack.xyz"
-    : "http://localhost:3001";
+export const BASE_URL = process.env.BASE_URL
+  ? process.env.BASE_URL
+  : "http://localhost:3001";
 
 export const COVER_IMAGE_URL = `${BASE_URL}/cover.png`;
 export const ERROR_IMAGE_URL = `${BASE_URL}/error.png`;
