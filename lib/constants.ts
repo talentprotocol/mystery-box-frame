@@ -22,7 +22,7 @@ export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
 
 export const REDIRECT_LINK = "https://link.airstack.xyz/horizon";
 
-export const SUPPLY_LIMIT = 10000;
+export const SUPPLY_LIMIT = 15000;
 export const MINTING_ELIGIBILITY_CRITERIA = {
   farcasterFollowersThreshold: 200,
   virtualPoapsThreshold: 1,
