@@ -1,10 +1,12 @@
 import { join } from "path";
 import satori from "satori";
 import * as fs from "fs";
-import { BASE_URL } from "./constants";
 
-const fontPath = join(process.cwd(), "Inter-SemiBold.ttf");
-let fontData = fs.readFileSync(fontPath);
+const interFontPath = join(process.cwd(), "Inter-SemiBold.ttf");
+let interFontData = fs.readFileSync(interFontPath);
+
+const concertOneFontPath = join(process.cwd(), "ConcertOne-Regular.ttf");
+let concertOneFontData = fs.readFileSync(concertOneFontPath);
 
 const backgroundImagePath = join(process.cwd(), "public", "nft-base.jpg");
 const backgroundImageData = fs.readFileSync(backgroundImagePath);
@@ -70,7 +72,7 @@ export const generateImageSvg = async (
       height: 1024,
       fonts: [
         {
-          data: fontData,
+          data: interFontData,
           name: "Inter-SemiBold.ttf",
           style: "normal",
           weight: 400,
@@ -107,10 +109,10 @@ export const generateCaptchaImageSvg = async (
           bottom: 380,
           fontSize: "50px",
           borderRadius: "8px",
-          fontFamily: "Inter-SemiBold", // use the font name here
+          fontFamily: "ConcertOne-Regular", // use the font name here
           color: "#000", // change this to the color you want for the text
-          paddingTop: "10px",
-          paddingBottom: "10px",
+          paddingTop: "20px",
+          paddingBottom: "20px",
           paddingRight: "100px",
           paddingLeft: "100px",
         }}
@@ -123,8 +125,8 @@ export const generateCaptchaImageSvg = async (
       height: 1024,
       fonts: [
         {
-          data: fontData,
-          name: "Inter-SemiBold.ttf",
+          data: concertOneFontData,
+          name: "ConcertOne-Regular.ttf",
           style: "normal",
           weight: 400,
         },

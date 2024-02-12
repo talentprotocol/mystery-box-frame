@@ -26,13 +26,14 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   if (!inputText) {
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
-  
+
   const isValid = await validateCaptchaChallenge(
     captchaId,
     parseInt(inputText)
   );
 
   if (!isValid) {
+    console.error("Invalid captcha", { captchaId, inputText });
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
 

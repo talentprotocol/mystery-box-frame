@@ -7,7 +7,7 @@ import {
   getFrameMessage,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { BASE_URL, COVER_IMAGE_URL } from "../lib/constants";
+import { BASE_URL, COVER_IMAGE_URL, REDIRECT_LINK } from "../lib/constants";
 
 // This is a react server component only
 export default async function Home({
@@ -31,10 +31,13 @@ export default async function Home({
   // then, when done, return next frame
   return (
     <div className="p-4">
-      Farcaster Frames Frenzy 2024
-      <Link href={`/debug?url=${BASE_URL}`} className="underline">
-        Debug
-      </Link>
+      Farcaster Frames Frenzy 2024 - Explore on{" "}
+      <Link href={REDIRECT_LINK}>Airstack</Link>
+      {process.env.NODE_ENV !== "production" && (
+        <Link href={`/debug?url=${BASE_URL}`} className="underline">
+          Debug
+        </Link>
+      )}
       <FrameContainer
         pathname={`${BASE_URL}/api/captcha`}
         postUrl={`${BASE_URL}/api/captcha`}

@@ -38,7 +38,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     accountAddress = await getAddressForFid({
       fid: action?.interactor.fid!,
-      options: { fallbackToCustodyAddress: true },
+      options: {
+        fallbackToCustodyAddress: true,
+        hubRequestOptions: {
+          headers: { api_key: process.env.NEYNAR_API_KEY! },
+        },
+      },
     });
 
     const { farcasterProfile, isEligible } = await isAddressEligible(
@@ -46,6 +51,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
 
     if (!isEligible) {
+      console.error(`${accountAddress} is not eligible`);
       return new NextResponse(NOT_ELIGIBLE_RESPONSE);
     }
 
@@ -57,7 +63,6 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
-      console.log("already claimed", accountAddress);
       return new NextResponse(SUCCESS_RESPONSE);
     }
 
