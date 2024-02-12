@@ -1569,6 +1569,14 @@ export type FarcasterFollowersQueryVariables = Exact<{
 
 export type FarcasterFollowersQuery = { Socials: { Social: Array<{ followerCount: number | null, userAddress: any | null, profileHandle: string | null, userId: string | null }> | null } | null };
 
+export type NftTokenBalanceQueryVariables = Exact<{
+  owner: Scalars['Identity']['input'];
+  token: Scalars['Address']['input'];
+}>;
+
+
+export type NftTokenBalanceQuery = { TokenBalances: { TokenBalance: Array<{ amount: string }> | null } | null, Tokens: { Token: Array<{ totalSupply: string | null }> | null } | null };
+
 export type PoaPsOwnedQueryVariables = Exact<{
   address: Scalars['Identity']['input'];
 }>;

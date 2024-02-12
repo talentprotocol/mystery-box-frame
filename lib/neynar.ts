@@ -1,7 +1,12 @@
-import { NeynarAPIClient } from '@neynar/nodejs-sdk';
+import { NeynarAPIClient } from "@neynar/nodejs-sdk";
 
-export const validateFrameMessageWithNeynar = async (messageBytesInHex: string) => {
+export const validateFrameMessageWithNeynar = async (
+  messageBytesInHex: string
+) => {
   const sdk = new NeynarAPIClient(process.env.NEYNAR_API_KEY!);
-  const data = await sdk.validateFrameAction(messageBytesInHex);
+  const data = await sdk.validateFrameAction(messageBytesInHex, {
+    castReactionContext: false,
+    followContext: false,
+  });
   return data;
 };

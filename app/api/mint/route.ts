@@ -16,6 +16,7 @@ import {
   SUCCESS_RESPONSE,
   TRY_AGAIN_RESPONSE,
 } from "../../../lib/frame-utils";
+import { fetchNftTokenBalance } from "../../../lib/airstack/token-balance";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -54,15 +55,17 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
     console.time("getTotalSupply");
-    const totalSupply = await getTotalSupply();
-    if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
+    const { balance, totalSupply } = await fetchNftTokenBalance(
+      `fc_fid:${fid}`,
+      process.env.NFT_CONTRACT_ADDRESS!
+    );
+    if (parseInt(totalSupply as string) >= SUPPLY_LIMIT) {
+      console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
-    console.timeEnd("getTotalSupply");
 
-    console.time("getBalanceOf");
-    const accountBalance = await getBalanceOf(accountAddress!);
-    if (parseInt(accountBalance.result!) > 0) {
+    if (parseInt(balance as string) > 0) {
+      console.error("Already minted");
       return new NextResponse(SUCCESS_RESPONSE);
     }
     console.timeEnd("getBalanceOf");
