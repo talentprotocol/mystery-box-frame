@@ -1,12 +1,11 @@
-import { BaseSepoliaTestnet, Base } from "@thirdweb-dev/chains";
+import { Sepolia, Base } from "@thirdweb-dev/chains";
 
 export const NFT_COLLECTION_ADDRESS =
   process.env.NODE_ENV === "production"
     ? "0x4c17fF12D9A925A0DeC822a8cBF06F46c626855c"
-    : "0x51eF9B78658Dd74512AE834C49Edc6a6f8CD245c";
+    : "0x86E81B1fc1D43D8FCdBa4639887d063Ca39c77Cd";
 
-export const CHAIN =
-  process.env.NODE_ENV === "production" ? Base : BaseSepoliaTestnet;
+export const CHAIN = process.env.NODE_ENV === "production" ? Base : Sepolia;
 
 export const BASE_URL = process.env.BASE_URL
   ? process.env.BASE_URL
