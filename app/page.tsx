@@ -24,11 +24,6 @@ export default async function Home({
   if (frameMessage && !frameMessage?.isValid) {
     throw new Error("Invalid frame payload");
   }
-
-  // Here: do a server side side effect either sync or async (using await), such as minting an NFT if you want.
-  // example: load the users credentials & check they have an NFT
-
-  // then, when done, return next frame
   return (
     <div className="p-4">
       Farcaster Frames Frenzy 2024 - Explore on{" "}
