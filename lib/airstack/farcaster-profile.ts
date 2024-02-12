@@ -8,7 +8,6 @@ const query = /* GraphQL */ `
     Socials(
       input: {
         filter: {
-          followerCount: { _gt: 200 }
           dappName: { _eq: farcaster }
           identity: { _eq: $address }
         }

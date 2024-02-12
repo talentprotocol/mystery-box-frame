@@ -32,6 +32,7 @@ export const fetchNonVirtualPoapsOwned = async (address: string) => {
   const response = await fetchAllPagesQuery<PoaPsOwnedQuery>(query, {
     address,
   });
+  console.log(response);
   if (response.length === 0) {
     return [];
   }

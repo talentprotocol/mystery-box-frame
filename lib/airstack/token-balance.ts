@@ -36,12 +36,12 @@ export const fetchNftTokenBalance = async (
   owner: string,
   token: string
 ): Promise<{ balance: string | number; totalSupply: string | number }> => {
-  console.log(owner, token);
+  console.log({ owner, token });
   const { data, error }: QueryResponse = await fetchQuery(query, {
     owner,
     token,
   });
-  console.log(data);
+  console.log(JSON.stringify({ data, error }, null, 2));
   if (error || !data) {
     throw new Error(`Error fetching token balance: ${error?.message}`);
   }

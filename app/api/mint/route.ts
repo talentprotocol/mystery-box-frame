@@ -31,7 +31,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     console.time("getAddressFromFid");
     accountAddress = await getAddressForFid({
-      fid: action?.interactor.fid!,
+      fid: action?.interactor?.fid!,
       options: {
         fallbackToCustodyAddress: true,
         hubRequestOptions: {
@@ -59,6 +59,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       `fc_fid:${fid}`,
       NFT_COLLECTION_ADDRESS
     );
+    console.log({ balance, totalSupply });
     console.timeEnd("supply and balance checks");
     if (parseInt(totalSupply as string) >= SUPPLY_LIMIT) {
       console.error("Sold out");

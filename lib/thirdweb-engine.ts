@@ -15,10 +15,6 @@ export const mintTo = async (
   const name = `${profileName} - Farcaster Horizon - OG`;
   const description = `Celebrate Farcaster's growth to 100K MAU with your personalized Farcaster Horizon OG NFT. Each NFT in the collection contains the unique FID and username of the minter.`;
   const ipfsUrl = await uploadToIPFS(image);
-  console.log({
-    chain: CHAIN.chainId.toString(),
-    contractAddress: NFT_COLLECTION_ADDRESS,
-  });
   engine.erc721.mintTo(
     // chain
     CHAIN.chainId.toString(),
