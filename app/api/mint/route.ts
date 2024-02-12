@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
-import {
-  BASE_URL,
-  ERROR_IMAGE_URL,
-  NOT_ELIGIBLE_IMAGE_URL,
-  REDIRECT_LINK,
-  SOLD_OUT_IMAGE_URL,
-  SUCCESS_IMAGE_URL,
-  SUPPLY_LIMIT,
-} from "../../../lib/constants";
+import { SUPPLY_LIMIT } from "../../../lib/constants";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
 import {
@@ -36,6 +28,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(TRY_AGAIN_RESPONSE);
     }
 
+    console.time("getAddressFromFid");
     accountAddress = await getAddressForFid({
       fid: action?.interactor.fid!,
       options: {
@@ -45,10 +38,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
         },
       },
     });
+    console.timeEnd("getAddressFromFid");
 
+    console.time("isAddressEligible");
     const { farcasterProfile, isEligible } = await isAddressEligible(
       accountAddress!
     );
+    console.timeEnd("isAddressEligible");
 
     if (!isEligible) {
       console.error(`${accountAddress} is not eligible`);
@@ -57,19 +53,26 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     const { userId: fid, profileHandle: username } = farcasterProfile!;
 
+    console.time("getTotalSupply");
     const totalSupply = await getTotalSupply();
     if (parseInt(totalSupply.result!) >= SUPPLY_LIMIT) {
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
+    console.timeEnd("getTotalSupply");
+
+    console.time("getBalanceOf");
     const accountBalance = await getBalanceOf(accountAddress!);
     if (parseInt(accountBalance.result!) > 0) {
       return new NextResponse(SUCCESS_RESPONSE);
     }
+    console.timeEnd("getBalanceOf");
 
     const svg = await generateImageSvg(fid!.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
+    console.time("mintTo");
     await mintTo(accountAddress!, username!, image);
+    console.timeEnd("mintTo");
 
     return new NextResponse(SUCCESS_RESPONSE);
   } catch (e) {
