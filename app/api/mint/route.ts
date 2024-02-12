@@ -66,6 +66,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
+    
     const didClaim = await hasClaimed(accountAddress);
     if (parseInt(balance as string) > 0 || didClaim) {
       console.error("Already minted");
