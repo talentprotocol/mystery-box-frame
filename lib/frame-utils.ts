@@ -9,6 +9,7 @@ import {
   REDIRECT_LINK,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
+  WAVE_1_COMPLETED_IMAGE_URL,
 } from "./constants";
 
 export const START_RESPONSE = (captchaId: string) =>
@@ -25,6 +26,13 @@ export const INVALID_CAPTCHA_RESPONSE = getFrameHtml({
   image: INVALID_CAPTCHA_IMAGE_URL,
   buttons: [{ label: "Try Again", action: "post" }],
   postUrl: `${BASE_URL}/api/captcha`,
+});
+
+export const WAVE_1_COMPLETED_RESPONSE = getFrameHtml({
+  version: "vNext",
+  image: WAVE_1_COMPLETED_IMAGE_URL,
+  buttons: [{ label: "View the Collection on Airstack", action: "post_redirect" }],
+  postUrl: `${BASE_URL}/api/completed/redirect`,
 });
 
 export const TRY_AGAIN_RESPONSE = getFrameHtml({

@@ -19,6 +19,7 @@ export const NOT_ELIGIBLE_IMAGE_URL = `${BASE_URL}/not-eligible.png`;
 export const CAPTCHA_IMAGE_URL = `${BASE_URL}/captcha.png`;
 export const INVALID_CAPTCHA_IMAGE_URL = `${BASE_URL}/invalid-captcha.png`;
 export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
+export const WAVE_1_COMPLETED_IMAGE_URL = `${BASE_URL}/wave-1-completed.png`;
 
 export const REDIRECT_LINK = "https://link.airstack.xyz/horizon";
 
