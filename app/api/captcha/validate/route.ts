@@ -10,7 +10,6 @@ import {
   INVALID_CAPTCHA_RESPONSE,
   REQUEST_MINT_RESPONSE,
   TRY_AGAIN_RESPONSE,
-  WAVE_1_COMPLETED_RESPONSE,
 } from "../../../../lib/frame-utils";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
@@ -39,8 +38,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     return new NextResponse(INVALID_CAPTCHA_RESPONSE);
   }
 
-  //return new NextResponse(REQUEST_MINT_RESPONSE(captchaId, inputText));
-  return new NextResponse(WAVE_1_COMPLETED_RESPONSE);
+  return new NextResponse(REQUEST_MINT_RESPONSE(captchaId, inputText));
 }
 
 export async function POST(req: NextRequest): Promise<Response> {

@@ -1,24 +1,19 @@
-import { fetchFarcasterProfileInfo } from "./airstack/farcaster-profile";
-import { PrismaClient, SocialProfileType} from "@prisma/client";
+import { PrismaClient, SocialProfileType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const isAddressEligible = async (
-  username: string
-): Promise<boolean> => {
-
+export const isUserEligible = async (username: string): Promise<boolean> => {
   // check if user is on builder.fi with his fc account
   const builderfiProfile = await prisma.socialProfile.findFirst({
-    where: { 
+    where: {
       profileName: username,
-      type: SocialProfileType.FARCASTER 
+      type: SocialProfileType.FARCASTER,
     },
   });
-  
+
   if (!builderfiProfile) {
     return false;
   }
 
-  return true
-  
+  return true;
 };

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
-import { NFT_COLLECTION_ADDRESS, SUPPLY_LIMIT } from "../../../lib/constants";
-import { generateImageSvg } from "../../../lib/svg";
-import sharp from "sharp";
-import { isAddressEligible } from "../../../lib/mint-gating";
+import { FrameActionPayload } from "frames.js";
+import { isUserEligible } from "../../../lib/mint-gating";
 import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 import {
   NOT_ELIGIBLE_RESPONSE,
@@ -11,7 +8,6 @@ import {
   SUCCESS_RESPONSE,
   TRY_AGAIN_RESPONSE,
 } from "../../../lib/frame-utils";
-import { fetchNftTokenBalance } from "../../../lib/airstack/token-balance";
 import {
   deleteCaptchaChallenge,
   validateCaptchaChallenge,
@@ -43,54 +39,26 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(TRY_AGAIN_RESPONSE);
     }
 
-    console.time("getAddressFromFid");
-    const fid = action?.interactor.fid;
-    accountAddress = await getAddressForFid({
-      fid: fid!,
-      options: {
-        fallbackToCustodyAddress: true,
-        hubRequestOptions: {
-          headers: { api_key: process.env.NEYNAR_API_KEY! },
-        },
-      },
-    });
-    console.timeEnd("getAddressFromFid");
-
-    console.time("isAddressEligible");
-    const isEligible = await isAddressEligible(action?.interactor.username!);
-    console.log(isEligible );
+    const isEligible = await isUserEligible(action?.interactor.username!);
+    console.log(isEligible);
 
     if (!isEligible) {
       console.error(`${accountAddress} is not eligible`);
       return new NextResponse(NOT_ELIGIBLE_RESPONSE);
     }
 
-    const { profileHandle: username } = farcasterProfile!;
-
-    console.time("supply and balance checks");
-
-    const { balance, totalSupply } = await fetchNftTokenBalance(
-      `fc_fid:${fid}`,
-      NFT_COLLECTION_ADDRESS
-    );
-    console.log({ balance, totalSupply });
-    console.timeEnd("supply and balance checks");
-    if (parseInt(totalSupply as string) >= SUPPLY_LIMIT) {
+    // TODO: check total supply and balance with syndicate api
+    const totalSupply = 10000;
+    const balance = 0;
+    if (totalSupply >= SUPPLY_LIMIT) {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
 
-    if (parseInt(balance as string) > 0) {
+    if (balance > 0) {
       console.error("Already minted");
       return new NextResponse(SUCCESS_RESPONSE);
     }
-
-    // todo change it
-
-    const svg = await generateImageSvg(fid!.toString(), username!);
-    const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
-
-    console.time("mintTo");
 
     // todo maybe change it
     await mintTo(accountAddress!, username!, image);

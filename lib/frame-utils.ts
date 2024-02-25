@@ -1,15 +1,14 @@
 import { getFrameHtml } from "frames.js";
 import {
   BASE_URL,
-  CAPTCHA_IMAGE_URL,
+  BUILDERFI_APP_URL,
   ERROR_IMAGE_URL,
   INVALID_CAPTCHA_IMAGE_URL,
   LETS_GO_IMAGE_URL,
   NOT_ELIGIBLE_IMAGE_URL,
-  REDIRECT_LINK,
+  COLLECTION_LINK,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
-  WAVE_1_COMPLETED_IMAGE_URL,
 } from "./constants";
 
 export const START_RESPONSE = (captchaId: string) =>
@@ -26,13 +25,6 @@ export const INVALID_CAPTCHA_RESPONSE = getFrameHtml({
   image: INVALID_CAPTCHA_IMAGE_URL,
   buttons: [{ label: "Try Again", action: "post" }],
   postUrl: `${BASE_URL}/api/captcha`,
-});
-
-export const WAVE_1_COMPLETED_RESPONSE = getFrameHtml({
-  version: "vNext",
-  image: WAVE_1_COMPLETED_IMAGE_URL,
-  buttons: [{ label: "View the Collection on Airstack", action: "post_redirect" }],
-  postUrl: `${BASE_URL}/api/completed/redirect`,
 });
 
 export const TRY_AGAIN_RESPONSE = getFrameHtml({
@@ -53,8 +45,8 @@ export const REQUEST_MINT_RESPONSE = (captchaId: string, result: string) =>
 export const SUCCESS_RESPONSE = getFrameHtml({
   version: "vNext",
   image: SUCCESS_IMAGE_URL,
-  buttons: [{ label: "View your NFT on Airstack", action: "post_redirect" }],
-  postUrl: REDIRECT_LINK,
+  buttons: [{ label: "View your NFT on Framechain", action: "post_redirect" }],
+  postUrl: COLLECTION_LINK,
 });
 
 export const SOLD_OUT_RESPONSE = getFrameHtml({
@@ -62,11 +54,11 @@ export const SOLD_OUT_RESPONSE = getFrameHtml({
   image: SOLD_OUT_IMAGE_URL,
   buttons: [
     {
-      label: "View the collection on Airstack",
+      label: "View the collection on Framechain",
       action: "post_redirect",
     },
   ],
-  postUrl: REDIRECT_LINK,
+  postUrl: COLLECTION_LINK,
 });
 
 export const NOT_ELIGIBLE_RESPONSE = getFrameHtml({
@@ -74,9 +66,9 @@ export const NOT_ELIGIBLE_RESPONSE = getFrameHtml({
   image: NOT_ELIGIBLE_IMAGE_URL,
   buttons: [
     {
-      label: "View the collection on Airstack",
+      label: "Sign up on builder.fi first! 🔷",
       action: "post_redirect",
     },
   ],
-  postUrl: REDIRECT_LINK,
+  postUrl: BUILDERFI_APP_URL,
 });
