@@ -3,7 +3,6 @@ import { FrameActionPayload, getAddressForFid, getFrameHtml } from "frames.js";
 import { NFT_COLLECTION_ADDRESS, SUPPLY_LIMIT } from "../../../lib/constants";
 import { generateImageSvg } from "../../../lib/svg";
 import sharp from "sharp";
-import { mintTo } from "../../../lib/thirdweb-engine";
 import { isAddressEligible } from "../../../lib/mint-gating";
 import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 import {
