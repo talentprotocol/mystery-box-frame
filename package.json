@@ -1,6 +1,6 @@
 {
   "name": "framesjs-starter",
-  "version": "0.1.6",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,7 @@
     "@thirdweb-dev/storage": "^2.0.9",
     "@vercel/kv": "^1.0.1",
     "ethers": "^5",
-    "frames.js": "^0.4.3",
+    "frames.js": "^0.5.3",
     "next": "14.1.0",
     "nft.storage": "^7.1.1",
     "prisma": "^5.9.1",
@@ -31,9 +31,6 @@
     "sharp": "0.32.6",
     "swr": "^2.2.4",
     "uuid": "^9.0.1"
-  },
-  "engines": {
-    "node": ">=18.17.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",

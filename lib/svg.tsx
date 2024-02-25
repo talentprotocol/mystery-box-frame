@@ -5,9 +5,6 @@ import * as fs from "fs";
 const interFontPath = join(process.cwd(), "Inter-SemiBold.ttf");
 let interFontData = fs.readFileSync(interFontPath);
 
-const concertOneFontPath = join(process.cwd(), "ConcertOne-Regular.ttf");
-let concertOneFontData = fs.readFileSync(concertOneFontPath);
-
 const captchaImagePath = join(process.cwd(), "public", "captcha.png");
 const captchaImageData = fs.readFileSync(captchaImagePath);
 const captchaImageBase64 = `data:image/png;base64,${captchaImageData.toString(
@@ -41,7 +38,7 @@ export const generateCaptchaImageSvg = async (
           bottom: 380,
           fontSize: "50px",
           borderRadius: "8px",
-          fontFamily: "ConcertOne-Regular", // use the font name here
+          fontFamily: "Inter-SemiBold", // use the font name here
           color: "#000", // change this to the color you want for the text
           paddingTop: "20px",
           paddingBottom: "20px",
@@ -57,8 +54,8 @@ export const generateCaptchaImageSvg = async (
       height: 1024,
       fonts: [
         {
-          data: concertOneFontData,
-          name: "ConcertOne-Regular.ttf",
+          data: interFontData,
+          name: "Inter-SemiBold",
           style: "normal",
           weight: 400,
         },

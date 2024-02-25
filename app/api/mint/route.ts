@@ -12,6 +12,8 @@ import {
   deleteCaptchaChallenge,
   validateCaptchaChallenge,
 } from "../../../lib/captcha";
+import { SUPPLY_LIMIT } from "../../../lib/constants";
+import { mintTokens } from "../../../lib/syndicate-mint";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -60,9 +62,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(SUCCESS_RESPONSE);
     }
 
-    // todo maybe change it
-    await mintTo(accountAddress!, username!, image);
-    console.timeEnd("mintTo");
+    console.time("minting");
+    /*await mintTokens(
+      body.trustedData.messageBytes,
+      accountAddress!,
+      action?.interactor.fid!
+    );*/
+    console.timeEnd("minting");
 
     return new NextResponse(SUCCESS_RESPONSE);
   } catch (e) {

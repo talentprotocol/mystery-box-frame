@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FrameActionPayload, getFrameHtml } from "frames.js";
-import {
-  BASE_URL,
-  ERROR_IMAGE_URL,
-  LETS_GO_IMAGE_URL,
-} from "../../../../lib/constants";
 import { validateCaptchaChallenge } from "../../../../lib/captcha";
 import {
   INVALID_CAPTCHA_RESPONSE,
