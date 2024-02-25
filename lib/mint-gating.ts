@@ -1,6 +1,7 @@
 import { fetchFarcasterProfileInfo } from "./airstack/farcaster-profile";
-import { fetchNonVirtualPoapsOwned } from "./airstack/virtual-poaps";
-import { MINTING_ELIGIBILITY_CRITERIA } from "./constants";
+import { PrismaClient, SocialProfileType} from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export const isAddressEligible = async (
   address: string,
@@ -20,19 +21,23 @@ export const isAddressEligible = async (
   if (!farcasterProfile) {
     return { farcasterProfile: undefined, isEligible: false };
   }
-  // If the user has more than 200 followers on farcaster, they are eligible
-  if (
-    farcasterProfile?.followerCount! >=
-    MINTING_ELIGIBILITY_CRITERIA.farcasterFollowersThreshold
-  ) {
-    return { farcasterProfile, isEligible: true };
+
+  // check if user is on builder.fi with his fc account
+  const builderfiProfile = await prisma.socialProfile.findFirst({
+    where: { 
+      profileName: farcasterProfile.profileHandle || "",
+      type: SocialProfileType.FARCASTER 
+    },
+    include: { user: true }
+  });
+  
+  if (!builderfiProfile) {
+    return { farcasterProfile: undefined, isEligible: false };
   }
-  // If the user has at least one IRL poap, they are eligible
-  const nonVirtualPoaps = await fetchNonVirtualPoapsOwned(address);
+
   return {
     farcasterProfile,
-    isEligible:
-      nonVirtualPoaps.length >=
-      MINTING_ELIGIBILITY_CRITERIA.virtualPoapsThreshold,
+    isEligible: true,
   };
+
 };

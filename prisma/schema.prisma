@@ -1,0 +1,335 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  wallet                      String                    @unique @db.VarChar(50)
+  socialWallet                String?                   @unique @db.VarChar(50)
+  privyUserId                 String?                   @unique
+  displayName                 String?                   @db.VarChar(255)
+  avatarUrl                   String?                   @db.VarChar(500)
+  isActive                    Boolean                   @default(false)
+  isAdmin                     Boolean                   @default(false)
+  hasFinishedOnboarding       Boolean                   @default(false)
+  invitedById                 Int?
+  id                          Int                       @id @default(autoincrement())
+  createdAt                   DateTime                  @default(now())
+  updatedAt                   DateTime                  @updatedAt
+  lastRecommendationsSyncedAt DateTime?
+  bio                         String?                   @db.VarChar(500)
+  isGated                     Boolean                   @default(true)
+  comments                    Comment[]
+  inviteCodes                 InviteCode[]
+  keysOwned                   KeyRelationship[]         @relation("holder")
+  keysOfSelf                  KeyRelationship[]         @relation("owner")
+  sourceNotifications         Notification[]
+  notifications               Notification[]            @relation("targetUser")
+  points                      Point[]
+  questions                   Question[]                @relation("questioner")
+  replies                     Question[]                @relation("replier")
+  reactions                   Reaction[]
+  recommendedUsers            RecommendedUser[]         @relation("recommendationSource")
+  recommendedTo               RecommendedUser[]         @relation("recommendationTarget")
+  SigningChallenge            SigningChallenge?
+  socialProfiles              SocialProfile[]
+  invitedBy                   InviteCode?               @relation("invitation", fields: [invitedById], references: [id])
+  notificationSettings        UserNotificationSetting[]
+  quests                      UserQuest[]
+  tags                        Tag[]                     @relation("TagToUser")
+  settings                    UserSetting[]
+}
+
+model SocialProfile {
+  type           SocialProfileType
+  profileName    String                   @db.VarChar(255)
+  profileImage   String?                  @db.VarChar(500)
+  userId         Int
+  socialData     Json?
+  id             Int                      @id @default(autoincrement())
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  bio            String?                  @db.VarChar(500)
+  followerCount  Int?
+  followingCount Int?
+  user           User                     @relation(fields: [userId], references: [id])
+  followedBy     SocialProfileFollowing[] @relation("followedBy")
+  followings     SocialProfileFollowing[] @relation("followings")
+
+  @@unique([userId, type])
+}
+
+model SocialProfileFollowing {
+  profileId   Int
+  followingId Int
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  following   SocialProfile @relation("followedBy", fields: [followingId], references: [id])
+  profile     SocialProfile @relation("followings", fields: [profileId], references: [id])
+
+  @@unique([profileId, followingId])
+}
+
+model Question {
+  questionContent String     @db.VarChar(500)
+  questionerId    Int
+  reply           String?    @db.VarChar
+  replierId       Int?
+  repliedOn       DateTime?
+  id              Int        @id @default(autoincrement())
+  //Questions replies are gated by default
+  isGated         Boolean    @default(true)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  comments        Comment[]
+  questioner      User       @relation("questioner", fields: [questionerId], references: [id])
+  replier         User?      @relation("replier", fields: [replierId], references: [id])
+  reactions       Reaction[]
+  replyReactions  Reaction[] @relation("ReplyReaction")
+  tags            Tag[]      @relation("QuestionToTag")
+}
+
+model Comment {
+  //Comments are not gated by default
+  isGated    Boolean    @default(false)
+  content    String     @db.VarChar
+  questionId Int
+  authorId   Int
+  id         Int        @id @default(autoincrement())
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  author     User       @relation(fields: [authorId], references: [id])
+  question   Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reactions  Reaction[]
+}
+
+model Reaction {
+  reactionType ReactionType
+  userId       Int
+  questionId   Int?
+  id           Int          @id @default(autoincrement())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  replyId      Int?
+  commentId    Int?
+  comment      Comment?     @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  question     Question?    @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  reply        Question?    @relation("ReplyReaction", fields: [replyId], references: [id], onDelete: Cascade)
+  user         User         @relation(fields: [userId], references: [id])
+
+  @@unique([userId, questionId])
+  @@unique([userId, replyId])
+  @@unique([userId, commentId])
+}
+
+model InviteCode {
+  code        String   @unique @db.VarChar(50)
+  userId      Int
+  maxUses     Int
+  used        Int
+  isActive    Boolean  @default(false)
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  invitations User[]   @relation("invitation")
+}
+
+model Point {
+  description String   @db.VarChar(500)
+  userId      Int
+  points      Int
+  hidden      Boolean
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  claimed     Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model RecommendedUser {
+  recommendationScore Int
+  id                  Int      @id @default(autoincrement())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  avatarUrl           String?
+  forId               Int
+  userId              Int?
+  wallet              String
+  ens                 String?
+  farcaster           String?
+  lens                String?
+  talentProtocol      String?
+  for                 User     @relation("recommendationSource", fields: [forId], references: [id])
+  user                User?    @relation("recommendationTarget", fields: [userId], references: [id])
+
+  @@unique([forId, wallet])
+}
+
+model SigningChallenge {
+  message   String
+  userId    Int      @unique
+  publicKey String
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Tag {
+  name      String     @unique @db.VarChar(255)
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[] @relation("QuestionToTag")
+  users     User[]     @relation("TagToUser")
+}
+
+model Notification {
+  targetUserId Int
+  sourceUserId Int?
+  description  String?
+  isRead       Boolean          @default(false)
+  readAt       DateTime?
+  type         NotificationType
+  referenceId  Int?
+  id           Int              @id @default(autoincrement())
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  sourceUser   User?            @relation(fields: [sourceUserId], references: [id])
+  targetUser   User             @relation("targetUser", fields: [targetUserId], references: [id])
+}
+
+model UserNotificationSetting {
+  userId           Int
+  notificationType NotificationType
+  isDisabled       Boolean          @default(false)
+  id               Int              @id @default(autoincrement())
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  user             User             @relation(fields: [userId], references: [id])
+
+  @@unique([userId, notificationType])
+}
+
+model Trade {
+  id            Int      @id @default(autoincrement())
+  holderAddress String
+  ownerAddress  String
+  amount        BigInt
+  ethCost       BigInt?
+  protocolFee   BigInt?
+  ownerFee      BigInt?
+  block         BigInt
+  chainId       Int
+  hash          String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  timestamp     BigInt?
+  processed     Boolean  @default(false)
+}
+
+model KeyRelationship {
+  id        Int      @id @default(autoincrement())
+  holderId  Int
+  ownerId   Int
+  amount    BigInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  holder    User     @relation("holder", fields: [holderId], references: [id])
+  owner     User     @relation("owner", fields: [ownerId], references: [id])
+
+  @@unique([holderId, ownerId])
+}
+
+model SystemSetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Quest {
+  description String
+  points      Int
+  isActive    Boolean     @default(false)
+  path        String?
+  id          Int         @id @default(autoincrement())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  users       UserQuest[]
+}
+
+model UserQuest {
+  userId      Int
+  questId     Int
+  completedAt DateTime?
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  quest       Quest     @relation(fields: [questId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
+
+model KeyPricing {
+  shares    Int
+  buyPrice  BigInt
+  sellPrice BigInt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+}
+
+enum UserSettingKeyEnum {
+  ONBOARDING_HAS_EXPORTED_WALLET
+  ONBOARDING_TASKLIST_DO_NOT_SHOW_AGAIN
+}
+
+model UserSetting {
+  user   User               @relation(fields: [userId], references: [id])
+  userId Int
+  key    UserSettingKeyEnum
+  value  String
+
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, key])
+}
+
+enum SocialProfileType {
+  FARCASTER
+  LENS
+  TALENT_PROTOCOL
+  ENS
+}
+
+enum ReactionType {
+  UPVOTE
+  DOWNVOTE
+  LIKE
+}
+
+enum NotificationType {
+  ASKED_QUESTION
+  REPLIED_YOUR_QUESTION
+  REPLIED_OTHER_QUESTION
+  QUESTION_UPVOTED
+  QUESTION_DOWNVOTED
+  REPLY_REACTION
+  KEYBUY
+  KEYSELL
+  USER_INVITED
+  FRIEND_JOINED
+  POINTS_DROP
+  NEW_INVITE_CODE
+  SYSTEM
+  NEW_OPEN_QUESTION
+}

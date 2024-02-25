@@ -73,6 +73,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     const { profileHandle: username } = farcasterProfile!;
 
     console.time("supply and balance checks");
+
     const { balance, totalSupply } = await fetchNftTokenBalance(
       `fc_fid:${fid}`,
       NFT_COLLECTION_ADDRESS
@@ -89,10 +90,14 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(SUCCESS_RESPONSE);
     }
 
+    // todo change it
+
     const svg = await generateImageSvg(fid!.toString(), username!);
     const image = await sharp(Buffer.from(svg)).toFormat("png").toBuffer();
 
     console.time("mintTo");
+
+    // todo maybe change it
     await mintTo(accountAddress!, username!, image);
     console.timeEnd("mintTo");
 
