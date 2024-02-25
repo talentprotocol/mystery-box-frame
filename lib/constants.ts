@@ -1,12 +1,3 @@
-import { Sepolia, Base } from "@thirdweb-dev/chains";
-
-export const NFT_COLLECTION_ADDRESS =
-  process.env.NODE_ENV === "production"
-    ? "0x4c17fF12D9A925A0DeC822a8cBF06F46c626855c"
-    : "0x86E81B1fc1D43D8FCdBa4639887d063Ca39c77Cd";
-
-export const CHAIN = process.env.NODE_ENV === "production" ? Base : Sepolia;
-
 export const BASE_URL = process.env.BASE_URL
   ? process.env.BASE_URL
   : "http://localhost:3001";
@@ -21,6 +12,8 @@ export const INVALID_CAPTCHA_IMAGE_URL = `${BASE_URL}/invalid-captcha.png`;
 export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
 export const WAVE_1_COMPLETED_IMAGE_URL = `${BASE_URL}/wave-1-completed.png`;
 
-export const REDIRECT_LINK = "https://link.airstack.xyz/horizon";
+export const COLLECTION_LINK = "https://link.airstack.xyz/horizon";
+
+export const BUILDERFI_APP_URL = "https://app.builder.fi";
 
 export const SUPPLY_LIMIT = 5000;
