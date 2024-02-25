@@ -23,8 +23,4 @@ export const WAVE_1_COMPLETED_IMAGE_URL = `${BASE_URL}/wave-1-completed.png`;
 
 export const REDIRECT_LINK = "https://link.airstack.xyz/horizon";
 
-export const SUPPLY_LIMIT = 15000;
-export const MINTING_ELIGIBILITY_CRITERIA = {
-  farcasterFollowersThreshold: 200,
-  virtualPoapsThreshold: 1,
-};
+export const SUPPLY_LIMIT = 5000;
