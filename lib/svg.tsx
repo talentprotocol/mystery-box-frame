@@ -42,8 +42,8 @@ export const generateCaptchaImageSvg = async (
           color: "#0B6EF9", // change this to the color you want for the text
           paddingTop: "20px",
           paddingBottom: "20px",
-          paddingRight: "50px",
-          paddingLeft: "50px",
+          paddingRight: "80px",
+          paddingLeft: "80px",
         }}
       >
         {numA} + {numB}

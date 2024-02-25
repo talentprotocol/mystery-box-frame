@@ -1,7 +1,6 @@
 import { getFrameHtml } from "frames.js";
 import {
   BASE_URL,
-  BUILDERFI_APP_URL,
   ERROR_IMAGE_URL,
   INVALID_CAPTCHA_IMAGE_URL,
   LETS_GO_IMAGE_URL,
@@ -23,7 +22,7 @@ export const START_RESPONSE = (captchaId: string) =>
 export const INVALID_CAPTCHA_RESPONSE = getFrameHtml({
   version: "vNext",
   image: INVALID_CAPTCHA_IMAGE_URL,
-  buttons: [{ label: "try Again", action: "post" }],
+  buttons: [{ label: "try again", action: "post" }],
   postUrl: `${BASE_URL}/api/captcha`,
 });
 
@@ -54,7 +53,7 @@ export const SOLD_OUT_RESPONSE = getFrameHtml({
   image: SOLD_OUT_IMAGE_URL,
   buttons: [
     {
-      label: "wiew the collection on framechain",
+      label: "view the collection on framechain",
       action: "post_redirect",
     },
   ],
@@ -69,6 +68,10 @@ export const NOT_ELIGIBLE_RESPONSE = getFrameHtml({
       label: "sign up on builder.fi first! 🔷",
       action: "post_redirect",
     },
+    {
+      label: "refresh and try again",
+      action: "post",
+    },
   ],
-  postUrl: BUILDERFI_APP_URL,
+  postUrl: `${BASE_URL}/api/sign-up`,
 });
