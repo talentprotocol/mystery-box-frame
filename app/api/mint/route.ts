@@ -57,12 +57,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     console.timeEnd("getAddressFromFid");
 
     console.time("isAddressEligible");
-    const { farcasterProfile, isEligible } = await isAddressEligible(
-      accountAddress!,
-      fid!.toString()
-    );
-    console.log({ farcasterProfile, isEligible });
-    console.timeEnd("isAddressEligible");
+    const isEligible = await isAddressEligible(action?.interactor.username!);
+    console.log(isEligible );
 
     if (!isEligible) {
       console.error(`${accountAddress} is not eligible`);
