@@ -30,7 +30,8 @@
     "satori": "^0.10.13",
     "sharp": "0.32.6",
     "swr": "^2.2.4",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "viem": "^2.7.14"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
