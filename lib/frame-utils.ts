@@ -5,9 +5,10 @@ import {
   INVALID_CAPTCHA_IMAGE_URL,
   LETS_GO_IMAGE_URL,
   SIGN_UP_BF_IMAGE_URL,
-  COLLECTION_LINK,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
+  EXPLORER_LINK,
+  BUILDERFI_APP_URL,
 } from "./constants";
 
 export const START_RESPONSE = (captchaId: string) =>
@@ -41,23 +42,26 @@ export const REQUEST_MINT_RESPONSE = (captchaId: string, result: string) =>
     postUrl: `${BASE_URL}/api/mint?id=${captchaId}&result=${result}`,
   });
 
-export const SUCCESS_RESPONSE = getFrameHtml({
-  version: "vNext",
-  image: SUCCESS_IMAGE_URL,
-  buttons: [{ label: "view your nft on framechain", action: "post_redirect" }],
-  postUrl: COLLECTION_LINK,
-});
+export const SUCCESS_RESPONSE = (transactionHash: string) =>
+  getFrameHtml({
+    version: "vNext",
+    image: SUCCESS_IMAGE_URL,
+    buttons: [
+      { label: "view your nft on framechain", action: "post_redirect" },
+    ],
+    postUrl: `${BASE_URL}/api/completed/redirect?txHash=${transactionHash}`,
+  });
 
 export const SOLD_OUT_RESPONSE = getFrameHtml({
   version: "vNext",
   image: SOLD_OUT_IMAGE_URL,
   buttons: [
     {
-      label: "view the collection on framechain",
+      label: "but you can still register to builder.fi! 🔷",
       action: "post_redirect",
     },
   ],
-  postUrl: COLLECTION_LINK,
+  postUrl: `${BASE_URL}/api/sign-up`,
 });
 
 export const NOT_ELIGIBLE_RESPONSE = getFrameHtml({

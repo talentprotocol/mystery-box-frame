@@ -1,10 +1,13 @@
-export const NFT_COLLECTION_ADDRESS = "0x5f69B1bD96cD7D8926D46ac2D5Ad4432a7B18BdE";
+export const NFT_COLLECTION_ADDRESS =
+  "0x5f69B1bD96cD7D8926D46ac2D5Ad4432a7B18BdE";
 
 export const BASE_URL = process.env.BASE_URL
   ? process.env.BASE_URL
   : "http://localhost:3001";
 
 export const SYNDICATE_API_KEY = process.env.SYNDICATE_API_KEY;
+
+export const RPC_URL = "https://rpc-frame.syndicate.io";
 
 export const COVER_IMAGE_URL = `${BASE_URL}/cover.png`;
 export const ERROR_IMAGE_URL = `${BASE_URL}/error.png`;
@@ -15,7 +18,8 @@ export const CAPTCHA_IMAGE_URL = `${BASE_URL}/captcha.png`;
 export const INVALID_CAPTCHA_IMAGE_URL = `${BASE_URL}/invalid-captcha.png`;
 export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
 
-export const COLLECTION_LINK = "https://link.airstack.xyz/horizon";
+export const EXPLORER_LINK = (txId: string) =>
+  "https://explorer-frame.syndicate.io/";
 
 export const BUILDERFI_APP_URL = "https://app.builder.fi";
 

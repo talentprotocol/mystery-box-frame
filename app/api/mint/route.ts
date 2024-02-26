@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { FrameActionPayload } from "frames.js";
+import { FrameActionPayload, getAddressForFid } from "frames.js";
 import { isUserEligible } from "../../../lib/mint-gating";
 import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 import {
@@ -12,8 +12,8 @@ import {
   deleteCaptchaChallenge,
   validateCaptchaChallenge,
 } from "../../../lib/captcha";
-import { SUPPLY_LIMIT } from "../../../lib/constants";
-import { mintTokens } from "../../../lib/syndicate-mint";
+import { getTxHash, mintTokens } from "../../../lib/syndicate-mint";
+import { checkNFTTotalSupply } from "../../../lib/collection-contract-checks";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   let accountAddress: string | undefined;
@@ -42,35 +42,41 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
 
     const isEligible = await isUserEligible(action?.interactor.username!);
-    console.log(isEligible);
+    console.log("is eligible?", isEligible);
 
     if (!isEligible) {
-      console.error(`${accountAddress} is not eligible`);
+      console.error(`${action?.interactor.username} is not eligible`);
       return new NextResponse(NOT_ELIGIBLE_RESPONSE);
     }
 
-    // TODO: check total supply and balance with syndicate api
-    const totalSupply = 10000;
-    const balance = 0;
-    if (totalSupply >= SUPPLY_LIMIT) {
+    const isSoldOut = await checkNFTTotalSupply();
+    console.log("is sold out?", isSoldOut);
+    if (isSoldOut) {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
 
-    if (balance > 0) {
-      console.error("Already minted");
-      return new NextResponse(SUCCESS_RESPONSE);
-    }
+    accountAddress = await getAddressForFid({
+      fid: action?.interactor.fid!,
+      options: {
+        fallbackToCustodyAddress: true,
+        hubRequestOptions: {
+          headers: { api_key: process.env.NEYNAR_API_KEY! },
+        },
+      },
+    });
 
     console.time("minting");
-    /*await mintTokens(
+    const txData = await mintTokens(
       body.trustedData.messageBytes,
       accountAddress!,
       action?.interactor.fid!
-    );*/
+    );
     console.timeEnd("minting");
 
-    return new NextResponse(SUCCESS_RESPONSE);
+    const txHash = await getTxHash(txData.transactionId);
+
+    return new NextResponse(SUCCESS_RESPONSE(txHash));
   } catch (e) {
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
