@@ -1,4 +1,4 @@
-export const NFT_COLLECTION_ADDRESS = "0x000";
+export const NFT_COLLECTION_ADDRESS = "0x5f69B1bD96cD7D8926D46ac2D5Ad4432a7B18BdE";
 
 export const BASE_URL = process.env.BASE_URL
   ? process.env.BASE_URL
