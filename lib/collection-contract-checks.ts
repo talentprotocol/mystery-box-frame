@@ -44,7 +44,7 @@ export async function checkNFTTotalSupply() {
       address: NFT_COLLECTION_ADDRESS,
       abi: ERC721_ABI,
       // 1a. Insert a single client
-      publicClient,
+      client: publicClient,
     });
     const result = await collection!.read!.totalSupply!();
     const supply = BigNumber.from(result);
