@@ -7,7 +7,7 @@ import {
   getFrameMessage,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { BASE_URL, COVER_IMAGE_URL, COLLECTION_LINK } from "../lib/constants";
+import { BASE_URL, COVER_IMAGE_URL } from "../lib/constants";
 
 // This is a react server component only
 export default async function Home({
