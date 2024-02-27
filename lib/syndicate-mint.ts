@@ -61,5 +61,5 @@ export const getTxHash = async (transactionId: string): Promise<string> => {
   if (!data || data?.success === false) {
     throw new Error("Error while fetching transaction details");
   }
-  return data.transactionHash;
+  return data.data.transactionHash;
 };
