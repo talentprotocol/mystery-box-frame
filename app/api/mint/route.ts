@@ -79,6 +79,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     return new NextResponse(SUCCESS_RESPONSE(txHash));
   } catch (e) {
+    console.error(e);
     return new NextResponse(TRY_AGAIN_RESPONSE);
   }
 }
