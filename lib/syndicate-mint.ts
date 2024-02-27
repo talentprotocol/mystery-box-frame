@@ -8,6 +8,21 @@ export const mintTokens = async (
   transactionId: string;
   userAddress: string;
 }> => {
+  console.log(
+    JSON.stringify(
+      {
+        frameTrustedData: frameTrustedData,
+        contractAddress: NFT_COLLECTION_ADDRESS,
+        functionSignature: "safeMint(address to, uint256 tokenId)",
+        args: { to: addressReceiver, tokenId: tokenId },
+        shouldLike: false,
+        shouldRecast: false,
+        shouldFollow: false,
+      },
+      null,
+      2
+    )
+  );
   const res = await fetch("https://frame.syndicate.io/api/v2/sendTransaction", {
     method: "POST",
     headers: {
