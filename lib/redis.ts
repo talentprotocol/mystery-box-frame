@@ -13,7 +13,6 @@ export const setClaimStatus = async (address: string, status: ClaimStatus) => {
 export const hasClaimed = async (address: string): Promise<boolean> => {
   const claimed = await kv.get(address);
   if (!claimed) return false;
-  console.log(claimed);
   return claimed === ClaimStatus.CLAIMED || claimed === ClaimStatus.PENDING;
 };
 

@@ -16,6 +16,5 @@ export const storeNFT = async (
     name,
     description,
   });
-  console.log(result);
   return result.url;
 };
