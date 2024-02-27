@@ -18,8 +18,8 @@ export const CAPTCHA_IMAGE_URL = `${BASE_URL}/captcha.png`;
 export const INVALID_CAPTCHA_IMAGE_URL = `${BASE_URL}/invalid-captcha.png`;
 export const LETS_GO_IMAGE_URL = `${BASE_URL}/lets-go.png`;
 
-export const EXPLORER_LINK = (txId: string) =>
-  "https://explorer-frame.syndicate.io/";
+export const EXPLORER_LINK = (txHash: string) =>
+  `https://explorer-frame.syndicate.io/tx/${txHash}`;
 
 export const BUILDERFI_APP_URL = "https://app.builder.fi";
 
