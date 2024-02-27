@@ -45,7 +45,7 @@ export const mintTokens = async (
   if (!data || data?.success === false) {
     throw new Error("Error while minting tokens");
   }
-  return data;
+  return data.data;
 };
 
 export const getTxHash = async (transactionId: string): Promise<string> => {
