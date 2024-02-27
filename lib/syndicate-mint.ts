@@ -58,6 +58,7 @@ export const getTxHash = async (transactionId: string): Promise<string> => {
     }
   );
   const data = await res.json();
+  console.log(data);
   if (!data || data?.success === false) {
     throw new Error("Error while fetching transaction details");
   }
