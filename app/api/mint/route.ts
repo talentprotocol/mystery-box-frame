@@ -67,6 +67,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       },
     });
 
+    console.log(fid, "account address", accountAddress);
+
     console.time("minting");
     const txData = await mintTokens(
       body.trustedData.messageBytes,
