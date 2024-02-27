@@ -77,7 +77,11 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     );
     console.timeEnd("minting");
 
+    console.log(fid, "minted successfully", txData.transactionId);
+
     const txHash = await getTxHash(txData.transactionId);
+
+    console.log(fid, "txHash", txHash);
 
     return new NextResponse(SUCCESS_RESPONSE(txHash));
   } catch (e) {
