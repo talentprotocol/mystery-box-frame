@@ -41,8 +41,9 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(TRY_AGAIN_RESPONSE);
     }
 
+    const fid = action?.interactor.fid!;
     const isEligible = await isUserEligible(action?.interactor.username!);
-    console.log("is eligible?", isEligible);
+    console.log(fid, "is eligible?", isEligible);
 
     if (!isEligible) {
       console.error(`${action?.interactor.username} is not eligible`);
@@ -50,14 +51,14 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
     }
 
     const isSoldOut = await checkNFTTotalSupply();
-    console.log("is sold out?", isSoldOut);
+    console.log(fid, "is sold out?", isSoldOut);
     if (isSoldOut) {
       console.error("Sold out");
       return new NextResponse(SOLD_OUT_RESPONSE);
     }
 
     accountAddress = await getAddressForFid({
-      fid: action?.interactor.fid!,
+      fid,
       options: {
         fallbackToCustodyAddress: true,
         hubRequestOptions: {
