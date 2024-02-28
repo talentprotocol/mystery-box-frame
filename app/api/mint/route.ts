@@ -83,7 +83,7 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
 
     console.log(fid, "txHash", txHash);
 
-    return new NextResponse(SUCCESS_RESPONSE(txHash));
+    return new NextResponse(SUCCESS_RESPONSE({ transactionHash: txHash }));
   } catch (e) {
     console.error(e);
     return new NextResponse(TRY_AGAIN_RESPONSE);

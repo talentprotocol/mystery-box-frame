@@ -7,7 +7,7 @@ import {
   SIGN_UP_BF_IMAGE_URL,
   SOLD_OUT_IMAGE_URL,
   SUCCESS_IMAGE_URL,
-  EXPLORER_LINK,
+  EXPLORER_TX_LINK,
   BUILDERFI_APP_URL,
 } from "./constants";
 
@@ -42,14 +42,21 @@ export const REQUEST_MINT_RESPONSE = (captchaId: string, result: string) =>
     postUrl: `${BASE_URL}/api/mint?id=${captchaId}&result=${result}`,
   });
 
-export const SUCCESS_RESPONSE = (transactionHash: string) =>
+export const SUCCESS_RESPONSE = (data: {
+  transactionHash?: string;
+  address?: string;
+}) =>
   getFrameHtml({
     version: "vNext",
     image: SUCCESS_IMAGE_URL,
     buttons: [
       { label: "view your nft on framechain", action: "post_redirect" },
     ],
-    postUrl: `${BASE_URL}/api/completed/redirect?txHash=${transactionHash}`,
+    postUrl: `${BASE_URL}/api/completed/redirect?${
+      data.transactionHash
+        ? `?txHash=${data.transactionHash}`
+        : `address=${data.address}`
+    }`,
   });
 
 export const SOLD_OUT_RESPONSE = getFrameHtml({

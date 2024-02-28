@@ -1,13 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { EXPLORER_LINK } from "../../../../lib/constants";
+import {
+  EXPLORER_ADDRESS_LINK,
+  EXPLORER_TX_LINK,
+} from "../../../../lib/constants";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { searchParams } = new URL(req.url);
   const txHash = searchParams.get("txHash");
-  if (!txHash) {
+  const address = searchParams.get("address");
+  if (!txHash && !address) {
     return new NextResponse(null, { status: 400 });
   }
-  return NextResponse.redirect(EXPLORER_LINK(txHash!), { status: 302 });
+  if (txHash) {
+    return NextResponse.redirect(EXPLORER_TX_LINK(txHash!), { status: 302 });
+  } else {
+    return NextResponse.redirect(EXPLORER_ADDRESS_LINK(address!), {
+      status: 302,
+    });
+  }
 }
 
 export async function POST(req: NextRequest): Promise<Response> {

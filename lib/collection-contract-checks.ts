@@ -63,3 +63,29 @@ export async function checkNFTTotalSupply() {
     return false;
   }
 }
+
+export async function checkNFTBalance(address: string) {
+  try {
+    const collection = getContract({
+      address: NFT_COLLECTION_ADDRESS,
+      abi: ERC721_ABI,
+      // 1a. Insert a single client
+      client: publicClient,
+    });
+    const result = await collection!.read!.balanceOf!([address]);
+    const balance = BigNumber.from(result);
+
+    // Check if balance is 0
+    if (balance.eq(BigNumber.from(0))) {
+      console.log("Can mint an NFT");
+      return false;
+    } else {
+      console.log("Already minted");
+      return true;
+    }
+  } catch (error) {
+    console.error("Error while checking NFT total supply:", error);
+    // Handle error as per your requirement
+    return false;
+  }
+}
