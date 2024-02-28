@@ -54,7 +54,7 @@ export const SUCCESS_RESPONSE = (data: {
     ],
     postUrl: `${BASE_URL}/api/completed/redirect?${
       data.transactionHash
-        ? `?txHash=${data.transactionHash}`
+        ? `txHash=${data.transactionHash}`
         : `address=${data.address}`
     }`,
   });
