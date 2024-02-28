@@ -42,7 +42,7 @@ export const mintTokens = async (
 
   const data = await res.json();
   console.log("data", tokenId, data);
-  if (!data || data?.success === false) {
+  if (!data || data?.success === false || data.error) {
     throw new Error("Error while minting tokens");
   }
   return data.data;
