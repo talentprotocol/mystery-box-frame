@@ -26,4 +26,4 @@ export const EXPLORER_ADDRESS_LINK = (address: string) =>
 
 export const BUILDERFI_APP_URL = "https://app.builder.fi";
 
-export const SUPPLY_LIMIT = 5000;
+export const SUPPLY_LIMIT = 5555;
