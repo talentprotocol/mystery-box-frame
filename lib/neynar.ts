@@ -5,8 +5,8 @@ export const validateFrameMessageWithNeynar = async (
 ) => {
   const sdk = new NeynarAPIClient(process.env.NEYNAR_API_KEY!);
   const data = await sdk.validateFrameAction(messageBytesInHex, {
-    castReactionContext: false,
-    followContext: false,
+    castReactionContext: true,
+    followContext: true,
   });
   return data;
 };

@@ -33,19 +33,19 @@ export default async function Home({
   // then, when done, return next frame
   return (
     <div className="p-4">
-      builder.fi frame - og nft
+      talent protocol mystery box frame
       {process.env.NODE_ENV !== "production" && (
         <Link href={`/debug?url=${BASE_URL}`} className="underline">
           Debug
         </Link>
       )}
       <FrameContainer
-        postUrl={`${BASE_URL}/api/captcha`}
+        postUrl={`${BASE_URL}/api/open`}
         state={null}
         previousFrame={previousFrame}
       >
-        <FrameImage src={COVER_IMAGE_URL} />
-        <FrameButton>mint your builder.fi og nft!</FrameButton>
+        <FrameImage src={COVER_IMAGE_URL} aspectRatio="1:1" />
+        <FrameButton>Recast and Follow to Open 🎁</FrameButton>
       </FrameContainer>
     </div>
   );
