@@ -5,13 +5,11 @@ import {
   TALENT_PROTOCOL_PROFILE_URL,
   TALENT_PROTOCOL_SIGNUP_URL,
 } from "../../../lib/constants";
-import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
+import { validateFrameMessageWithAirstack } from "../../../lib/airstack";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameActionPayload = await req.json();
-  const { valid: isValid } = await validateFrameMessageWithNeynar(
-    body.trustedData.messageBytes
-  );
+  const { isValid } = await validateFrameMessageWithAirstack(body);
   if (!isValid) {
     return NextResponse.json(null, { status: 400 });
   }

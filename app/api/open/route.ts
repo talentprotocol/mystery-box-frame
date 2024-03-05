@@ -10,18 +10,15 @@ import {
   TALENT_PROTOCOL_FARCASTER_PROFILE_URL,
 } from "../../../lib/constants";
 import { claimTalReward } from "../../../lib/talent-protocol-api";
-import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
+import { validateFrameMessageWithAirstack } from "../../../lib/airstack";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   try {
     const body: FrameActionPayload = await req.json();
-    const { valid: isValid } = await validateFrameMessageWithNeynar(
-      body.trustedData.messageBytes
-    );
+    const { isValid } = await validateFrameMessageWithAirstack(body);
     if (!isValid) {
       return NextResponse.json(null, { status: 400 });
     }
-
     const message = await getFrameMessage(body, {
       hubRequestOptions: {
         headers: { api_key: process.env.NEYNAR_API_KEY! },

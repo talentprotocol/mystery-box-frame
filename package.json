@@ -11,7 +11,7 @@
     "generate": "npx graphql-codegen"
   },
   "dependencies": {
-    "@airstack/frames": "^1.0.8",
+    "@airstack/frames": "^1.0.9",
     "@airstack/node": "^0.0.5",
     "@apollo/client": "^3.9.4",
     "@neynar/nodejs-sdk": "^1.11.0",
