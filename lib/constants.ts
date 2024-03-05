@@ -1,4 +1,3 @@
-
 export const BASE_URL = process.env.BASE_URL
   ? process.env.BASE_URL
   : "http://localhost:3001";
@@ -18,3 +17,5 @@ export const TALENT_PROTOCOL_PROFILE_URL = (address: string) =>
   `https://beta.talentprotocol.com/${address}`;
 export const TALENT_PROTOCOL_BET_GOAL_URL =
   "https://beta.talentprotocol.com/home";
+
+export const TALENT_PROTOCOL_API_URL = "https://dev.talentprotocol.com";

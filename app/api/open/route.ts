@@ -14,6 +14,7 @@ import {
   TALENT_PROTOCOL_FARCASTER_CHANNEL_URL,
   TALENT_PROTOCOL_FARCASTER_PROFILE_URL,
 } from "../../../lib/constants";
+import { claimTalReward } from "../../../lib/talent-protocol-api";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameActionPayload = await req.json();
@@ -36,24 +37,13 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
       return new NextResponse(FOLLOW_RECAST_RESPONSE);
     }
 
-    // TODO: API CALL TO TALENT PROTOCOL
-    // should return an error if already claimed this week
-    // should return amount and address if successful
-    let error = false;
-    if (error) {
+    const { wallet, amount } = await claimTalReward({
+      trustedData: body.trustedData,
+    });
+    if (!amount) {
       return new NextResponse(ALREADY_OPENED_RESPONSE);
     }
-    const amount = 10;
-    const accountAddress = await getAddressForFid({
-      fid: body.untrustedData.fid,
-      options: {
-        fallbackToCustodyAddress: true,
-        hubRequestOptions: {
-          headers: { api_key: process.env.NEYNAR_API_KEY! },
-        },
-      },
-    });
-    return new NextResponse(OPENED_RESPONSE(amount, accountAddress));
+    return new NextResponse(OPENED_RESPONSE(amount, wallet!));
   } else if (message.buttonIndex === 2) {
     // clicked "Follow /talent"
     return NextResponse.redirect(TALENT_PROTOCOL_FARCASTER_CHANNEL_URL, {
