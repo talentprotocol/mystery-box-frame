@@ -1,26 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  ALREADY_OPENED_RESPONSE,
-  FOLLOW_RECAST_RESPONSE,
-  OPENED_RESPONSE,
-} from "../../../lib/frame-utils";
-import {
-  FrameActionPayload,
-  getAddressForFid,
-  getFrameMessage,
-} from "frames.js";
-import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
+import { FrameActionPayload, getFrameMessage } from "frames.js";
 import {
   TALENT_PROTOCOL_BET_GOAL_URL,
-  TALENT_PROTOCOL_FARCASTER_CHANNEL_URL,
-  TALENT_PROTOCOL_FARCASTER_PROFILE_URL,
   TALENT_PROTOCOL_PROFILE_URL,
   TALENT_PROTOCOL_SIGNUP_URL,
 } from "../../../lib/constants";
+import { validateFrameMessageWithNeynar } from "../../../lib/neynar";
 
 async function getResponse(req: NextRequest): Promise<NextResponse> {
   const body: FrameActionPayload = await req.json();
-  const { valid: isValid, action } = await validateFrameMessageWithNeynar(
+  const { valid: isValid } = await validateFrameMessageWithNeynar(
     body.trustedData.messageBytes
   );
   if (!isValid) {

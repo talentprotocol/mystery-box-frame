@@ -3,7 +3,7 @@ import { BASE_URL } from "./constants";
 
 export const FOLLOW_RECAST_RESPONSE = getFrameHtml({
   version: "vNext",
-  image: `${BASE_URL}/follow-recast.jpg`,
+  image: `${BASE_URL}/recast-follow.jpg`,
   imageAspectRatio: "1:1",
   buttons: [
     { label: "Retry", action: "post" },

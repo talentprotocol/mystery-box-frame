@@ -14,6 +14,7 @@ export const claimTalReward = async (body: {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-API-KEY": process.env.TALENT_PROTOCOL_API_KEY!,
       },
       body: JSON.stringify(body),
     }
