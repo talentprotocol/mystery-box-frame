@@ -18,4 +18,11 @@ export const TALENT_PROTOCOL_PROFILE_URL = (address: string) =>
 export const TALENT_PROTOCOL_BET_GOAL_URL =
   "https://beta.talentprotocol.com/home";
 
-export const TALENT_PROTOCOL_API_URL = "https://dev.talentprotocol.com";
+export const TALENT_PROTOCOL_API_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://api.talentprotocol.com"
+    : "https://dev.talentprotocol.com";
+export const TALENT_PROTOCOL_API_KEY =
+  process.env.NODE_ENV === "production"
+    ? process.env.TALENT_PROTOCOL_API_KEY_PROD
+    : process.env.TALENT_PROTOCOL_API_KEY_DEV;

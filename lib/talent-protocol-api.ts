@@ -1,4 +1,4 @@
-import { TALENT_PROTOCOL_API_URL } from "./constants";
+import { TALENT_PROTOCOL_API_KEY, TALENT_PROTOCOL_API_URL } from "./constants";
 
 export interface ClaimRewardResponse {
   message: string;
@@ -14,7 +14,7 @@ export const claimTalReward = async (body: {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-API-KEY": process.env.TALENT_PROTOCOL_API_KEY!,
+        "X-API-KEY": TALENT_PROTOCOL_API_KEY!,
       },
       body: JSON.stringify(body),
     }
